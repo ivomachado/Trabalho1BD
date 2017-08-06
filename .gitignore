@@ -31,7 +31,11 @@
 *.out
 *.app
 /bin
+/binWsl
 
 # Doccumentação
 
 /doc
+
+# Dados
+*.csv
