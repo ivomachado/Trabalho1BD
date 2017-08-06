@@ -7,15 +7,13 @@ Article::Article(const char* csvEntry)
     int id, year, quotes;
 
     std::string intPattern = "\"%d\";";
-    std::string stringPattern = "\"%[^;\"]\";";
-
     std::string bigPattern = intPattern
-        + stringPattern
+        + "\"%300[^;\"]\";" //300 limit
         + intPattern
-        + stringPattern
+        + "\"%1024[^;\"]\";" //1024 limit
         + intPattern
-        + stringPattern
-        + stringPattern;
+        + "\"%100[^;\"]\";" //100 limit
+        + "\"%1024[^;\"]\";"; //1024 limit
 
     sscanf(csvEntry, bigPattern.c_str(),
         &id,
