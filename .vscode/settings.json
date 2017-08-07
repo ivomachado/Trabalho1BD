@@ -1,0 +1,7 @@
+{
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bin*": true,
+        "**/bower_components": true
+    }
+}
