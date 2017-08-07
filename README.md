@@ -5,7 +5,7 @@ Primeiro trabalho da disciplina de Banco de Dados I no período 2017/2.
 ## Alunos
 
 - Ivo Machado de Souza - 21553684
-- Juliana Castro da Silva - 21553686
+- Juliana Castro da Silva - 21553685
 
 ## Documentação
 
