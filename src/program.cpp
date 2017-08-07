@@ -1,3 +1,4 @@
+#include "program.hpp"
 #include "article.hpp"
 #include <cstdio>
 #include <cstdlib>
@@ -11,10 +12,11 @@ using namespace std;
 /** Função que lê da entrada padrão o nome de um arquivo, lê o arquivo e popula
  * O banco de dados com os dados do arquivo.
  */
-void upload()
+void Program::upload()
 {
     string filename = "artigo.csv";
-    // cin >> filename;
+    cout << "Digite o caminho do arquivo:\n";
+    cin >> filename;
     vector<Article> myArticles;
     FILE* file = fopen(filename.c_str(), "r");
     char line[maxChar];
@@ -28,6 +30,6 @@ void upload()
 
 int main()
 {
-    upload();
+    Program::upload();
     return 0;
 }
