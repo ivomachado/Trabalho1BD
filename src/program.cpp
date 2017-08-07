@@ -5,13 +5,8 @@
 #include <iostream>
 #include <vector>
 
-const int maxChar = 2001; /* A maior linha do arquivo possui 1545 caracteres*/
-
 using namespace std;
 
-/** Função que lê da entrada padrão o nome de um arquivo, lê o arquivo e popula
- * O banco de dados com os dados do arquivo.
- */
 void Program::upload()
 {
     string filename = "artigo.csv";
@@ -19,9 +14,9 @@ void Program::upload()
     cin >> filename;
     vector<Article> myArticles;
     FILE* file = fopen(filename.c_str(), "r");
-    char line[maxChar];
+    char line[Program::maxChar];
 
-    while (fgets(line, maxChar, file) != NULL) {
+    while (fgets(line, Program::maxChar, file) != NULL) {
         myArticles.emplace_back(line);
     }
     cout << myArticles.size() << '\n';
