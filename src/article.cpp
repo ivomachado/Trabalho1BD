@@ -1,34 +1,42 @@
 #include "article.hpp"
 #include <iostream>
 
-Article::Article(const char* csvEntry)
+Article::Article(FILE* file)
 {
-    char title[301], authors[1025], updateTime[101], snippet[1025];
-    int id, year, quotes;
+    char buffer[2001];
 
     std::string intPattern = "\"%d\";";
+    std::string stringPattern = "\"%2000[^\"]\";";
     std::string bigPattern = intPattern
-        + "\"%300[^;\"]\";" //300 limit
+        + "\"%300[^\"]\";" //300 limit
         + intPattern
-        + "\"%1024[^;\"]\";" //1024 limit
+        + "\"%1024[^\"]\";" //1024 limit
         + intPattern
-        + "\"%100[^;\"]\";" //100 limit
-        + "\"%1024[^;\"]\";"; //1024 limit
+        + "\"%100[^\"]\";" //100 limit
+        + "%1024[^\n]\n"; //1024 limit
+    fscanf(file, intPattern.c_str(), &m_id);
 
-    sscanf(csvEntry, bigPattern.c_str(),
-        &id,
-        title,
-        &year,
-        authors,
-        &quotes,
-        updateTime,
-        snippet);
+    fscanf(file, stringPattern.c_str(), buffer);
+    buffer[300] = '\0';
+    m_title = std::string(buffer);
 
-    m_id = id;
-    m_title = std::string(title);
-    m_year = year;
-    m_authors = std::string(authors);
-    m_quotes = quotes;
-    m_updateTime = std::string(updateTime);
-    m_snippet = std::string(snippet);
+    fscanf(file, intPattern.c_str(), &m_year);
+
+    fscanf(file, stringPattern.c_str(), buffer);
+    buffer[1024] = '\0';
+    m_authors = std::string(buffer);
+    
+    fscanf(file, intPattern.c_str(), &m_quotes);
+
+    fscanf(file, stringPattern.c_str(), buffer);
+    buffer[100] = '\0';
+    m_updateTime = std::string(buffer);
+
+    fscanf(file, "%2000[^\n]\n", buffer);
+    buffer[1024] = '\0';
+    m_snippet = std::string(buffer);
+
+    if(m_snippet.size() > 0 && m_snippet[0] == '"') {
+        m_snippet = m_snippet.substr(1, m_snippet.size() - 2);
+    }
 }

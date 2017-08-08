@@ -17,10 +17,9 @@ public:
     std::string m_updateTime;
     std::string m_snippet;
     /**
-     * Recebe uma linha de um CSV para criar um artigo com as informações 
-     * contidas nesta linha
+     * Recebe um arquivo em formato csv e lê um registro dele, modificando o cursor do arquivo
      */
-    Article(const char* csvEntry);
+    Article(FILE* file);
 
     /**
      * Construtor padrão
