@@ -14,12 +14,12 @@ void Program::upload()
     cin >> filename;
     vector<Article> myArticles;
     FILE* file = fopen(filename.c_str(), "r");
-    char line[Program::maxChar];
+    // char line[Program::maxChar];
 
-    while (fgets(line, Program::maxChar, file) != NULL) {
-        myArticles.emplace_back(line);
+    while (!feof(file)) {
+        myArticles.emplace_back(file);
+        cout << myArticles.back().m_id << '\n';
     }
-    cout << myArticles.size() << '\n';
     fclose(file);
 }
 
