@@ -29,6 +29,7 @@ public:
     short writeBuffer(char* buffer, short begin);
     String(const char* data, short maxSize);
     String(short maxSize);
+    ~String();
 };
 };
 

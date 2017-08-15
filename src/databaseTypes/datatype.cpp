@@ -46,3 +46,7 @@ short databaseTypes::Integer::readBuffer(char* buffer, short begin)
     sscanf(buffer + begin, "%d", &m_data);
     return begin + sizeof(int);
 }
+
+databaseTypes::String::~String() {
+    delete[] m_data;
+}
