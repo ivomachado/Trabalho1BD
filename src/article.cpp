@@ -1,5 +1,6 @@
 #include "article.hpp"
 #include <iostream>
+#include <cstring>
 
 Article::Article(FILE* file)
 {
@@ -18,25 +19,29 @@ Article::Article(FILE* file)
 
     fscanf(file, stringPattern.c_str(), buffer);
     buffer[300] = '\0';
-    m_title = std::string(buffer);
+    strcpy(m_title, buffer);
 
     fscanf(file, intPattern.c_str(), &m_year);
 
     fscanf(file, stringPattern.c_str(), buffer);
     buffer[1024] = '\0';
-    m_authors = std::string(buffer);
-    
+    strcpy(m_authors, buffer);
+
     fscanf(file, intPattern.c_str(), &m_quotes);
 
     fscanf(file, stringPattern.c_str(), buffer);
     buffer[100] = '\0';
-    m_updateTime = std::string(buffer);
+    strcpy(m_updateTime, buffer);
 
     fscanf(file, "%2000[^\n]\n", buffer);
     buffer[1024] = '\0';
-    m_snippet = std::string(buffer);
-
-    if(m_snippet.size() > 0 && m_snippet[0] == '"') {
-        m_snippet = m_snippet.substr(1, m_snippet.size() - 2);
+    std::string snippetMiddleware(buffer);
+    if(snippetMiddleware.size() > 0 && snippetMiddleware[0] == '"') {
+        snippetMiddleware = snippetMiddleware.substr(1, snippetMiddleware.size() - 2);
     }
+    strcpy(m_snippet, snippetMiddleware.c_str());
+}
+
+Article::Article() {
+
 }

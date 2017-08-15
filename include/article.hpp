@@ -10,12 +10,12 @@
 class Article {
 public:
     int m_id;
-    std::string m_title;
+    char m_title[301];
     int m_year;
-    std::string m_authors;
+    char m_authors[1025];
     int m_quotes;
-    std::string m_updateTime;
-    std::string m_snippet;
+    char m_updateTime[101];
+    char m_snippet[1025];
     /**
      * Recebe um arquivo em formato csv e lê um registro dele, modificando o cursor do arquivo
      */
