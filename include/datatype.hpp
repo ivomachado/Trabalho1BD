@@ -5,13 +5,13 @@
 
 namespace databaseTypes {
 
-class DataType {
+class Field {
 public:
     short virtual writeToBuffer(char* buffer, short begin) = 0;
     short virtual readFromBuffer(char* buffer, short begin) = 0;
 };
 
-class Integer : public DataType {
+class Integer : public Field {
     
 public:
     int m_data;
@@ -21,7 +21,7 @@ public:
     Integer();
 };
 
-class String : public DataType {
+class String : public Field {
 public:
     short m_maxSize;
     char* m_data;
