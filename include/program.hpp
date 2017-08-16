@@ -3,10 +3,8 @@
 
 class Program {
 private:
-    /** A maior linha do arquivo possui 1545 caracteres*/
-    static const int maxChar = 2001;
-
 public:
+    static const int BLOCK_SIZE = 4096;
     /** Função que lê da entrada padrão o nome de um arquivo, lê o arquivo e popula
      * O banco de dados com os dados do arquivo.
      */
