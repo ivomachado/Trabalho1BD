@@ -77,6 +77,8 @@ TEST_CASE("Escrita e leitura de bloco")
         block2.ReadFromFile(file2);
 
         fclose(file2);
+
+        remove("tmp.bin");
     }
 
     REQUIRE(block2.m_bufferPos == block.m_bufferPos);
