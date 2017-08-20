@@ -12,6 +12,7 @@ public:
     short readFromBuffer(char* buffer, short begin);
 
     Record(const std::vector<Field>& data);
+    Record();
 };
 
 #endif // !RECORD_HPP

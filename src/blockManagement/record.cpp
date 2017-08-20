@@ -1,4 +1,7 @@
 #include "record.hpp"
+#include "utils.hpp"
+
+Record::Record() {}
 
 Record::Record(const std::vector<Field>& data)
     : m_data{ data }
@@ -7,16 +10,10 @@ Record::Record(const std::vector<Field>& data)
 
 short Record::readFromBuffer(char* buffer, short begin)
 {
-    for(auto field: m_data) {
-        begin = field.readFromBuffer(buffer, begin);
-    }
-    return begin;
+    return Utils::readVectorFromBuffer(buffer, m_data, begin);
 }
 
 short Record::writeToBuffer(char* buffer, short begin)
 {
-    for(auto field: m_data) {
-        begin = field.writeToBuffer(buffer, begin);
-    }
-    return begin;
+    return Utils::writeVectorToBuffer(buffer, m_data, begin);
 }
