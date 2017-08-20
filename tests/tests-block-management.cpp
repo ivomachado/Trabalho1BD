@@ -19,13 +19,11 @@ TEST_CASE("Record escrevendo e lendo de buffer")
 
     Record b(vet);
 
-
     vet[0].m_integer = 3234234;
     strcpy(vet[1].m_string, string("teste1").c_str());
     strcpy(vet[2].m_string, string("teste2").c_str());
     vet[3].m_integer = 323432;
     Record a(vet);
-
 
     REQUIRE(a.writeToBuffer(buffer, 0) == 60);
     REQUIRE(b.readFromBuffer(buffer, 0) == 60);
@@ -65,26 +63,23 @@ TEST_CASE("Escrita e leitura de bloco")
         for (int i = 0; i < DiskBlock::SIZE; i++) {
             block2.m_buffer[i] = block.m_buffer[i];
         }
-        REQUIRE(block2.m_buffer[0] == block.m_buffer[0]);
-        REQUIRE(block2.m_buffer[1] == block.m_buffer[1]);
-        REQUIRE(block2.m_buffer[2] == block.m_buffer[2]);
-        REQUIRE(block2.m_buffer[3] == block.m_buffer[3]);
         block2.readFromBuffer();
-        REQUIRE(block2.m_bufferPos == block.m_bufferPos);
     }
 
-    // SECTION("E/S em Arquivo")
-    // {
-    //     FILE* file = fopen("tmp.bin", "wb+");
-    //     block.WriteToFile(file);
-    //     fclose(file);
+    SECTION("E/S em Arquivo")
+    {
+        FILE* file = fopen("tmp.bin", "wb+");
+        block.WriteToFile(file);
+        fclose(file);
 
-    //     FILE* file2 = fopen("tmp.bin", "rb");
+        FILE* file2 = fopen("tmp.bin", "rb");
 
-    //     block2.ReadFromFile(file2);
-    //     fclose(file2);
-    // }
+        block2.ReadFromFile(file2);
 
+        fclose(file2);
+    }
+
+    REQUIRE(block2.m_bufferPos == block.m_bufferPos);
     for (unsigned int i = 0; i < block2.m_records.size(); i++) {
 
         for (unsigned int j = 0; j < block2.m_records[i].m_data.size(); j++) {
