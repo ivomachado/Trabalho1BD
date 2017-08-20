@@ -1,6 +1,39 @@
 {
     "configurations": [
         {
+            "name": "WSL",
+            "intelliSenseMode": "clang-x64",
+            "includePath": [
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu/c++/5",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5/backward",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/lib/gcc/x86_64-linux-gnu/5/include",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/local/include",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu",
+                "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include",
+                "${workspaceRoot}",
+                "${workspaceRoot}/include"
+            ],
+            "defines": [
+                "__linux__",
+                "__x86_64__"
+            ],
+            "browse": {
+                "path": [
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/c++/5",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu/c++/5",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/lib/gcc/x86_64-linux-gnu/5/include",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/local/include",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/x86_64-linux-gnu",
+                    "${localappdata}/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/*"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
             "name": "Mac",
             "includePath": [
                 "/usr/include",
@@ -33,36 +66,6 @@
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}"
-                ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
-            }
-        },
-        {
-            "name": "Win32",
-            "includePath": [
-                "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/include/*",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/um",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
-                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
-                "${workspaceRoot}",
-                "${workspaceRoot}/include"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE"
-            ],
-            "intelliSenseMode": "msvc-x64",
-            "browse": {
-                "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Tools/MSVC/14.10.25017/include/*",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/um",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/ucrt",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/shared",
-                    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.15063.0/winrt",
-                    "${workspaceRoot}",
-                    "${workspaceRoot}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
