@@ -1,4 +1,5 @@
 #include "field.hpp"
+#include "utils.hpp"
 #include <cstdio>
 #include <cstring>
 
@@ -38,7 +39,7 @@ short Field::writeToBuffer(char* buffer, short begin)
 {
     switch (m_type) {
     case DataTypes::Integer:
-        sprintf(buffer + begin, "%d", m_integer);
+        Utils::intToCharArray(m_integer, buffer + begin);
         return begin + sizeof(int);
     case DataTypes::String:
         strcpy(buffer + begin, m_string);
@@ -54,6 +55,7 @@ short Field::readFromBuffer(char* buffer, short begin)
     switch (m_type) {
     case DataTypes::Integer:
         sscanf(buffer + begin, "%d", &m_integer);
+        m_integer = Utils::charArrayToInt(buffer + begin);
         return begin + sizeof(int);
     case DataTypes::String:
         strcpy(m_string, buffer + begin);
@@ -62,6 +64,32 @@ short Field::readFromBuffer(char* buffer, short begin)
         return begin;
     }
     return begin;
+}
+
+bool operator==(const Field& a, const Field& b) {
+    if(a.m_type == b.m_type) {
+        switch(a.m_type) {
+            case DataTypes::Integer:
+                return a.m_integer == b.m_integer;
+            case DataTypes::String:
+                return a.m_string == b.m_string;
+            case DataTypes::Invalid:
+                return false;
+        }
+    }
+    return false;
+}
+
+std::ostream& operator<<(std::ostream& os, const Field& field) {
+    switch (field.m_type) {
+    case DataTypes::Integer:
+        return os << field.m_integer;
+    case DataTypes::String:
+        return os << field.m_string;
+    case DataTypes::Invalid:
+        return os;
+    }
+    return os;
 }
 
 Field::~Field()

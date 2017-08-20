@@ -2,6 +2,7 @@
 #define DATATYPE_HPP
 
 #include <cstring>
+#include <iostream>
 
 enum class DataTypes { Invalid,
     Integer,
@@ -22,6 +23,8 @@ public:
     static Field asString(const char* data, short maxSize);
     short writeToBuffer(char* buffer, short begin);
     short readFromBuffer(char* buffer, short begin);
+    friend bool operator==(const Field& a, const Field& b);
+    friend std::ostream& operator<<(std::ostream& os, const Field& field);
 };
 
 #endif
