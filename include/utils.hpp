@@ -33,7 +33,7 @@ inline void intToCharArray(int value, char* buffer)
 
 inline int charArrayToInt(char* buffer)
 {
-    int num = ((buffer[0] << 24)) | ((buffer[1] << 16)) | ((buffer[2] << 8)) | (0xFF & (buffer[3]));
+    int num = ((buffer[0] & 0xFF) << 24) | ((buffer[1] & 0xFF) << 16) | ((buffer[2] & 0xFF) << 8) | (0xFF & (buffer[3]));
     return num;
 }
 }
