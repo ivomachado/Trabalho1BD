@@ -11,12 +11,10 @@ public:
     void ReadFromFile(FILE* file);
     void WriteToFile(FILE* file);
     static const int SIZE = 4096;
-
-private:
-    std::vector<Field> m_recordFields;
     std::vector<Record> m_records;
-    Record m_header;
     char m_buffer[DiskBlock::SIZE];
+    std::vector<Field> m_recordFields;
+    Record m_header;
     short m_bufferPos{ 0 };
     static const int MAGIC_NUMBER = 4294967291;
     static const int magicNumberPos = 1;

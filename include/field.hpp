@@ -8,11 +8,10 @@ enum class DataTypes { Invalid,
     String };
 
 class Field {
+public:
     short m_maxSize;
     DataTypes m_type{ DataTypes::Invalid };
     Field(DataTypes type);
-
-public:
     Field() {}
     ~Field();
     int m_integer;
