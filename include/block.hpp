@@ -18,6 +18,8 @@ public:
     short m_bufferPos{ 0 };
     static const int MAGIC_NUMBER = 4294967291;
     static const int magicNumberPos = 1;
+    void writeToBuffer();
+    void readFromBuffer();
 };
 
 #endif // !BLOCK_HPP
