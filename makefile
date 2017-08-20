@@ -51,7 +51,7 @@ COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@
 # compile C++ source files
 COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
 # link object files to binary
-LINK.o = $(LD) $(LDFLAGS) $(LDLIBS) -o $@
+LINK.o = $(LD) $(LDFLAGS) $(LDLIBS)
 
 all: .removeTests .bin
 
