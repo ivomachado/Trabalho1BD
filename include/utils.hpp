@@ -23,6 +23,19 @@ short readVectorFromBuffer(char* buffer, std::vector<T> &m_data, short begin)
     return begin;
 }
 
+inline void intToCharArray(int value, char* buffer)
+{
+    buffer[0] = (value >> 24) & 0xFF;
+    buffer[1] = (value >> 16) & 0xFF;
+    buffer[2] = (value >> 8) & 0xFF;
+    buffer[3] = value & 0xFF;
+}
+
+inline int charArrayToInt(char* buffer)
+{
+    int num = ((buffer[0] << 24)) | ((buffer[1] << 16)) | ((buffer[2] << 8)) | (0xFF & (buffer[3]));
+    return num;
+}
 }
 
 #endif // !UTILS_HPP
