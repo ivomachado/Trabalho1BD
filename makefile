@@ -61,7 +61,7 @@ clean:
 
 .PHONY: check
 check: .removeEntryPoint .changeBinName .bin
-	$(BIN)
+	$(BIN) -d yes
 
 .removeEntryPoint:
 	$(eval SRCS = $(ENTRY_POINT), $(SRCS))
