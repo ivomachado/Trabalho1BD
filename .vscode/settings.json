@@ -54,6 +54,9 @@
         "sstream": "cpp",
         "xlocmon": "cpp",
         "xloctime": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "*.tcc": "cpp",
+        "clocale": "cpp",
+        "cwctype": "cpp"
     }
 }
