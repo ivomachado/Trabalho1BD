@@ -57,6 +57,7 @@
         "xtree": "cpp",
         "*.tcc": "cpp",
         "clocale": "cpp",
-        "cwctype": "cpp"
+        "cwctype": "cpp",
+        "functional": "cpp"
     }
 }
