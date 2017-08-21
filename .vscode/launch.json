@@ -1,0 +1,96 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "preLaunchTask": "build",
+            "windows": {
+                "program": "${workspaceRoot}/bin/program.exe",
+                "miDebuggerPath": "/mingw64/bin/gdb.exe"
+            },
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "C++ Launch (WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/mnt/c/Users/ivoma/workspace/6Periodo/BDI/Trabalho1BD/bin/program",
+            "args": [
+                "-fThreading"
+            ],
+            "stopAtEntry": false,
+            "cwd": "/mnt/c/Users/ivoma/workspace/6Periodo/BDI/Trabalho1BD",
+            "environment": [],
+            "externalConsole": true,
+            "windows": {
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            },
+            "pipeTransport": {
+                "pipeCwd": "",
+                "pipeProgram": "c:\\windows\\sysnative\\bash.exe",
+                "pipeArgs": [
+                    "-c"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            "sourceFileMap": {
+                "/mnt/c": "c:\\"
+            }
+        },
+        {
+            "name": "C++ Test (WSL)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/mnt/c/Users/ivoma/workspace/6Periodo/BDI/Trabalho1BD/bin/.check",
+            "args": [
+                "-fThreading"
+            ],
+            "stopAtEntry": false,
+            "cwd": "/mnt/c/Users/ivoma/workspace/6Periodo/BDI/Trabalho1BD",
+            "environment": [],
+            "externalConsole": true,
+            "windows": {
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            },
+            "pipeTransport": {
+                "pipeCwd": "",
+                "pipeProgram": "c:\\windows\\sysnative\\bash.exe",
+                "pipeArgs": [
+                    "-c"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            "sourceFileMap": {
+                "/mnt/c": "c:\\"
+            }
+        }
+    ]
+}
