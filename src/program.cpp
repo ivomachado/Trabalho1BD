@@ -34,8 +34,8 @@ int main()
     vet.push_back(Field::asString(22));
     vet.push_back(Field::asInteger(3));
     Record b(vet);
-    strcpy(vet[1].m_string, string("teste1").c_str());
-    strcpy(vet[2].m_string, string("teste2").c_str());
+    vet[1].m_string = string("teste1");
+    vet[2].m_string = string("teste2");
     Record a(vet);
     cout << a.writeToBuffer(buffer, 0) << '\n';
     b.readFromBuffer(buffer, 0);

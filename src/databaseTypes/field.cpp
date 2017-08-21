@@ -31,7 +31,7 @@ Field Field::asInteger(int32_t value)
 Field Field::asString(const char* data, short maxSize)
 {
     Field field = Field::asString(maxSize);
-    strcpy(field.m_string, data);
+    field.m_string = std::string(data);
     return field;
 }
 
@@ -42,7 +42,7 @@ short Field::writeToBuffer(char* buffer, short begin)
         Utils::intToCharArray(m_integer, buffer + begin);
         return begin + sizeof(int);
     case DataTypes::String:
-        strcpy(buffer + begin, m_string);
+        strcpy(buffer + begin, m_string.c_str());
         return m_maxSize + begin;
     case DataTypes::Invalid:
         return begin;
@@ -58,7 +58,7 @@ short Field::readFromBuffer(char* buffer, short begin)
         m_integer = Utils::charArrayToInt(buffer + begin);
         return begin + sizeof(int);
     case DataTypes::String:
-        strcpy(m_string, buffer + begin);
+        m_string = std::string(buffer + begin);
         return m_maxSize + begin;
     case DataTypes::Invalid:
         return begin;
@@ -90,11 +90,4 @@ std::ostream& operator<<(std::ostream& os, const Field& field) {
         return os;
     }
     return os;
-}
-
-Field::~Field()
-{
-    if (m_string != nullptr) {
-        // delete[] m_string;
-    }
 }

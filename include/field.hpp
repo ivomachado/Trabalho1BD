@@ -15,9 +15,8 @@ public:
     DataTypes m_type{ DataTypes::Invalid };
     Field(DataTypes type);
     Field() {}
-    ~Field();
-    int m_integer;
-    char* m_string{ nullptr };
+    int32_t m_integer;
+    std::string m_string;
     static Field asInteger();
     static Field asInteger(int32_t value);
     static Field asString(short maxSize);

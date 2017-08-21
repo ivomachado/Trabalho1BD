@@ -20,8 +20,8 @@ TEST_CASE("Record escrevendo e lendo de buffer")
     Record b(vet);
 
     vet[0].m_integer = 3234234;
-    strcpy(vet[1].m_string, string("teste1").c_str());
-    strcpy(vet[2].m_string, string("teste2").c_str());
+    vet[1].m_string = string("teste1");
+    vet[2].m_string = string("teste2");
     vet[3].m_integer = 323432;
     Record a(vet);
 
@@ -29,8 +29,8 @@ TEST_CASE("Record escrevendo e lendo de buffer")
     REQUIRE(b.readFromBuffer(buffer, 0) == 60);
 
     REQUIRE(b.m_data[0].m_integer == 3234234);
-    REQUIRE(strcmp(b.m_data[1].m_string, "teste1") == 0);
-    REQUIRE(strcmp(b.m_data[2].m_string, "teste2") == 0);
+    REQUIRE(strcmp(b.m_data[1].m_string.c_str(), "teste1") == 0);
+    REQUIRE(strcmp(b.m_data[2].m_string.c_str(), "teste2") == 0);
     REQUIRE(b.m_data[3].m_integer == 323432);
 }
 
@@ -45,13 +45,13 @@ TEST_CASE("Escrita e leitura de bloco")
 
     Record a(recordFields), b(recordFields);
 
-    strcpy(a.m_data[0].m_string, "bankai");
+    a.m_data[0].m_string = string("bankai");
     a.m_data[1].m_integer = 324;
-    strcpy(a.m_data[2].m_string, "shikai");
+    a.m_data[2].m_string = string("shikai");
 
-    strcpy(b.m_data[0].m_string, "bankai2");
+    b.m_data[0].m_string = string("bankai2");
     a.m_data[1].m_integer = 326;
-    strcpy(b.m_data[2].m_string, "shikai2");
+    b.m_data[2].m_string = string("shikai2");
 
     block.m_records.push_back(a);
     block.m_records.push_back(b);
