@@ -2,6 +2,7 @@
 #define DATATYPE_HPP
 
 #include <cstring>
+#include <cstdint>
 #include <iostream>
 
 enum class DataTypes { Invalid,
@@ -18,7 +19,7 @@ public:
     int m_integer;
     char* m_string{ nullptr };
     static Field asInteger();
-    static Field asInteger(int value);
+    static Field asInteger(int32_t value);
     static Field asString(short maxSize);
     static Field asString(const char* data, short maxSize);
     short writeToBuffer(char* buffer, short begin);

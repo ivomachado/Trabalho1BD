@@ -21,7 +21,7 @@ Field Field::asString(short maxSize)
     return field;
 }
 
-Field Field::asInteger(int value)
+Field Field::asInteger(int32_t value)
 {
     Field field = Field::asInteger();
     field.m_integer = value;

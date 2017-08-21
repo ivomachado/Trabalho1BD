@@ -2,6 +2,7 @@
 #define UTILS_HPP
 
 #include <vector>
+#include <cstdint>
 
 namespace Utils {
 
@@ -23,7 +24,7 @@ short readVectorFromBuffer(char* buffer, std::vector<T> &m_data, short begin)
     return begin;
 }
 
-inline void intToCharArray(int value, char* buffer)
+inline void intToCharArray(int32_t value, char* buffer)
 {
     buffer[0] = (value >> 24) & 0xFF;
     buffer[1] = (value >> 16) & 0xFF;
@@ -31,9 +32,9 @@ inline void intToCharArray(int value, char* buffer)
     buffer[3] = value & 0xFF;
 }
 
-inline int charArrayToInt(char* buffer)
+inline int32_t charArrayToInt(char* buffer)
 {
-    int num = ((buffer[0] & 0xFF) << 24) | ((buffer[1] & 0xFF) << 16) | ((buffer[2] & 0xFF) << 8) | (0xFF & (buffer[3]));
+    int32_t num = ((buffer[0] & 0xFF) << 24) | ((buffer[1] & 0xFF) << 16) | ((buffer[2] & 0xFF) << 8) | (0xFF & (buffer[3]));
     return num;
 }
 }
