@@ -51,7 +51,9 @@ public:
     {
         for (auto& rec : data) {
             for (auto& field : rec.m_data) {
-                m_data += field.m_string;
+                if (field.m_type == DataTypes::String) {
+                    m_data += field.m_string;
+                }
             }
         }
     }
@@ -85,12 +87,13 @@ public:
 
     void write(std::vector<Record>& data)
     {
-        const char* buffer = m_data.c_str();
         int pos = 0;
         for (auto& rec : data) {
             for (auto& field : rec.m_data) {
-                field.m_string = std::string(buffer + pos, buffer + pos + field.m_maxSize);
-                pos += field.m_maxSize;
+                if (field.m_type == DataTypes::String) {
+                    field.m_string = std::string(m_data, pos, field.m_maxSize);
+                    pos += field.m_maxSize;
+                }
             }
         }
     }
