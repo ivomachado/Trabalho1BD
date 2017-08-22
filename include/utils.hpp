@@ -42,7 +42,11 @@ inline int32_t charArrayToInt(char* buffer)
 
 class BitMap {
 public:
-    std::string m_data;
+    std::string m_data{ "" };
+    BitMap()
+        : BitMap(0)
+    {
+    }
     BitMap(const std::vector<Record>& data)
     {
         for (auto& rec : data) {
