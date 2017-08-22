@@ -36,9 +36,12 @@ TEST_CASE("Operações com bitmap")
     for (int i = 0; i < testSize; i++) {
         REQUIRE(m.get(i) == i % 2);
     }
-    std::vector<Field> fields{ Field::asString(1), Field::asString(1), Field::asString(2) };
+    std::vector<Field> fields{
+        Field::asInteger(), Field::asString(1), Field::asString(1), Field::asString(2), Field::asInteger(),
+    };
+    // m.m_data = "data";
     Record rec(fields);
-    std::vector<Record> recs{rec};
+    std::vector<Record> recs{ rec };
     m.write(recs);
     Utils::BitMap m2(recs);
 
