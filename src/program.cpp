@@ -2,6 +2,7 @@
 #include "article.hpp"
 #include "field.hpp"
 #include "record.hpp"
+#include "hashfile.hpp"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -26,23 +27,16 @@ void Program::upload()
 
 int main()
 {
-    // Program::upload();
-    vector<Field> vet;
-    char buffer[4096];
-    vet.push_back(Field::asInteger(3));
-    vet.push_back(Field::asString(30));
-    vet.push_back(Field::asString(22));
-    vet.push_back(Field::asInteger(3));
-    Record b(vet);
-    vet[1].m_string = string("teste1");
-    vet[2].m_string = string("teste2");
-    Record a(vet);
-    cout << a.writeToBuffer(buffer, 0) << '\n';
-    b.readFromBuffer(buffer, 0);
-    cout << b.m_data[0].m_integer << '\n';
-    cout << b.m_data[1].m_string << '\n';
-    cout << b.m_data[2].m_string << '\n';
-    cout << b.m_data[3].m_integer << '\n';
-    // fclose(file);
-    return 0;
+    std::string firstBitMap;
+    {
+        HashFile hashfile = HashFile::Create("hash.bin");
+        hashfile.m_blocksMap.set(3, true);
+        hashfile.m_overflowBlocks = 3;
+        firstBitMap = hashfile.m_blocksMap.m_data;
+        hashfile.writeHeaderToDisk();
+    }
+
+    {
+        HashFile hashfile = HashFile::Open("hash.bin");
+    }
 }
