@@ -14,14 +14,14 @@ TEST_CASE("Record escrevendo e lendo de buffer")
     char buffer[4096];
     vet.push_back(Field::asInteger());
     vet.push_back(Field::asString(30));
-    vet.push_back(Field::asString(22));
+    vet.push_back(Field::asByteArray(22));
     vet.push_back(Field::asInteger());
 
     Record b(vet);
 
     vet[0].m_integer = 3234234;
     vet[1].m_string = string("teste1");
-    vet[2].m_string = string("teste2");
+    string teste = vet[2].m_string = string(22, static_cast<char>(0));
     vet[3].m_integer = 323432;
     Record a(vet);
 
@@ -30,7 +30,7 @@ TEST_CASE("Record escrevendo e lendo de buffer")
 
     REQUIRE(b.m_data[0].m_integer == 3234234);
     REQUIRE(strcmp(b.m_data[1].m_string.c_str(), "teste1") == 0);
-    REQUIRE(strcmp(b.m_data[2].m_string.c_str(), "teste2") == 0);
+    REQUIRE(b.m_data[2].m_string == teste);
     REQUIRE(b.m_data[3].m_integer == 323432);
 }
 
