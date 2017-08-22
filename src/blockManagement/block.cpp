@@ -39,3 +39,9 @@ void DiskBlock::readFromBuffer()
     }
     m_bufferPos = Utils::readVectorFromBuffer(m_buffer, m_records, m_bufferPos);
 }
+
+bool DiskBlock::insert(const Record& record)
+{
+    m_records.push_back(record);
+    return true;
+}

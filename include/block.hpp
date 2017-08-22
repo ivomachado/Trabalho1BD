@@ -2,8 +2,8 @@
 #define BLOCK_HPP
 
 #include "record.hpp"
-#include <vector>
 #include <cstdio>
+#include <vector>
 
 class DiskBlock {
 public:
@@ -11,6 +11,7 @@ public:
     void ReadFromFile(FILE* file);
     void WriteToFile(FILE* file);
     static const int SIZE = 4096;
+    static const int AVAILABLE_SIZE = 4092; //Menos o inteiro
     std::vector<Record> m_records;
     char m_buffer[DiskBlock::SIZE];
     std::vector<Field> m_recordFields;
@@ -20,6 +21,7 @@ public:
     static const int magicNumberPos = 1;
     void writeToBuffer();
     void readFromBuffer();
+    bool insert(const Record& record);
 };
 
 #endif // !BLOCK_HPP
