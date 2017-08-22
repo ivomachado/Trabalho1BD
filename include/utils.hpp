@@ -43,7 +43,7 @@ inline int32_t charArrayToInt(char* buffer)
 class BitMap {
 public:
     std::string m_data;
-    BitMap(const std::vector<Record> data)
+    BitMap(const std::vector<Record>& data)
     {
         for (auto& rec : data) {
             for (auto& field : rec.m_data) {
@@ -77,6 +77,18 @@ public:
         int32_t bitIndex = pos % 8;
 
         m_data[charIndex] = value ? m_data[charIndex] | (1 << bitIndex) : m_data[charIndex] & (~(1 << bitIndex));
+    }
+
+    void write(std::vector<Record>& data)
+    {
+        const char* buffer = m_data.c_str();
+        int pos = 0;
+        for (auto& rec : data) {
+            for (auto& field : rec.m_data) {
+                field.m_string = std::string(buffer + pos, buffer + pos + field.m_maxSize);
+                pos += field.m_maxSize;
+            }
+        }
     }
 };
 }
