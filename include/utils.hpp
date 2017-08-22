@@ -51,8 +51,10 @@ public:
     {
         for (auto& rec : data) {
             for (auto& field : rec.m_data) {
-                if (field.m_type == DataTypes::String) {
-                    m_data += field.m_string;
+                if (field.m_type == DataTypes::ByteArray) {
+                    for (int i = 0; i < field.m_maxSize; i++) {
+                        m_data += field.m_string[i];
+                    }
                 }
             }
         }
@@ -90,8 +92,10 @@ public:
         int pos = 0;
         for (auto& rec : data) {
             for (auto& field : rec.m_data) {
-                if (field.m_type == DataTypes::String) {
-                    field.m_string = std::string(m_data, pos, field.m_maxSize);
+                if (field.m_type == DataTypes::ByteArray) {
+                    for (int i = 0; i < field.m_maxSize; i++) {
+                        field.m_string[i] = m_data[pos + i];
+                    }
                     pos += field.m_maxSize;
                 }
             }
