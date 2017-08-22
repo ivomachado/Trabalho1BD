@@ -1,13 +1,15 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <vector>
+#include "record.hpp"
 #include <cstdint>
+#include <iostream>
+#include <vector>
 
 namespace Utils {
 
 template <typename T>
-short writeVectorToBuffer(char* buffer, std::vector<T> &m_data, short begin)
+short writeVectorToBuffer(char* buffer, std::vector<T>& m_data, short begin)
 {
     for (auto field : m_data) {
         begin = field.writeToBuffer(buffer, begin);
@@ -16,7 +18,7 @@ short writeVectorToBuffer(char* buffer, std::vector<T> &m_data, short begin)
 }
 
 template <typename T>
-short readVectorFromBuffer(char* buffer, std::vector<T> &m_data, short begin)
+short readVectorFromBuffer(char* buffer, std::vector<T>& m_data, short begin)
 {
     for (auto& field : m_data) {
         begin = field.readFromBuffer(buffer, begin);
@@ -37,6 +39,46 @@ inline int32_t charArrayToInt(char* buffer)
     int32_t num = ((buffer[0] & 0xFF) << 24) | ((buffer[1] & 0xFF) << 16) | ((buffer[2] & 0xFF) << 8) | (0xFF & (buffer[3]));
     return num;
 }
+
+class BitMap {
+public:
+    std::string m_data;
+    BitMap(const std::vector<Record> data)
+    {
+        for (auto& rec : data) {
+            for (auto& field : rec.m_data) {
+                m_data += field.m_string;
+            }
+        }
+    }
+
+    BitMap(int32_t size)
+    {
+        if (size % 8 == 0) {
+            size /= 8;
+        } else {
+            size /= 8;
+            size++;
+        }
+        m_data = std::string(size, static_cast<char>(0));
+    }
+
+    bool get(int32_t pos)
+    {
+        int32_t charIndex = pos / 8;
+        int32_t bitIndex = pos % 8;
+
+        return (m_data[charIndex] & (1 << bitIndex)) > 0;
+    }
+
+    void set(int32_t pos, bool value)
+    {
+        int32_t charIndex = pos / 8;
+        int32_t bitIndex = pos % 8;
+
+        m_data[charIndex] = value ? m_data[charIndex] | (1 << bitIndex) : m_data[charIndex] & (~(1 << bitIndex));
+    }
+};
 }
 
 #endif // !UTILS_HPP
