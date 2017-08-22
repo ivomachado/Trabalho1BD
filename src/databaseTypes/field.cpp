@@ -35,6 +35,14 @@ Field Field::asString(const char* data, short maxSize)
     return field;
 }
 
+Field Field::asByteArray(short maxSize)
+{
+    Field field(DataTypes::ByteArray);
+    field.m_maxSize = maxSize;
+    field.m_string = std::string(maxSize, static_cast<char>(0));
+    return field;
+}
+
 short Field::writeToBuffer(char* buffer, short begin)
 {
     switch (m_type) {
@@ -43,6 +51,11 @@ short Field::writeToBuffer(char* buffer, short begin)
         return begin + sizeof(int);
     case DataTypes::String:
         strcpy(buffer + begin, m_string.c_str());
+        return m_maxSize + begin;
+    case DataTypes::ByteArray:
+        for (short i = 0; i < m_maxSize; i++) {
+            buffer[begin + i] = m_string[i];
+        }
         return m_maxSize + begin;
     case DataTypes::Invalid:
         return begin;
@@ -60,31 +73,40 @@ short Field::readFromBuffer(char* buffer, short begin)
     case DataTypes::String:
         m_string = std::string(buffer + begin);
         return m_maxSize + begin;
+    case DataTypes::ByteArray:
+        for (short i = 0; i < m_maxSize; i++) {
+            m_string[i] = buffer[begin + i];
+        }
+        return m_maxSize + begin;
     case DataTypes::Invalid:
         return begin;
     }
     return begin;
 }
 
-bool operator==(const Field& a, const Field& b) {
-    if(a.m_type == b.m_type) {
-        switch(a.m_type) {
-            case DataTypes::Integer:
-                return a.m_integer == b.m_integer;
-            case DataTypes::String:
-                return a.m_string == b.m_string;
-            case DataTypes::Invalid:
-                return false;
+bool operator==(const Field& a, const Field& b)
+{
+    if (a.m_type == b.m_type) {
+        switch (a.m_type) {
+        case DataTypes::Integer:
+            return a.m_integer == b.m_integer;
+        case DataTypes::String:
+        case DataTypes::ByteArray:
+            return a.m_string == b.m_string;
+        case DataTypes::Invalid:
+            return false;
         }
     }
     return false;
 }
 
-std::ostream& operator<<(std::ostream& os, const Field& field) {
+std::ostream& operator<<(std::ostream& os, const Field& field)
+{
     switch (field.m_type) {
     case DataTypes::Integer:
         return os << field.m_integer;
     case DataTypes::String:
+    case DataTypes::ByteArray:
         return os << field.m_string;
     case DataTypes::Invalid:
         return os;

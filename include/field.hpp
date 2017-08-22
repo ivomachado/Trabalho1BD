@@ -7,7 +7,8 @@
 
 enum class DataTypes { Invalid,
     Integer,
-    String };
+    String,
+    ByteArray };
 
 class Field {
 public:
@@ -20,6 +21,7 @@ public:
     static Field asInteger();
     static Field asInteger(int32_t value);
     static Field asString(short maxSize);
+    static Field asByteArray(short maxSize);
     static Field asString(const char* data, short maxSize);
     short writeToBuffer(char* buffer, short begin);
     short readFromBuffer(char* buffer, short begin);
