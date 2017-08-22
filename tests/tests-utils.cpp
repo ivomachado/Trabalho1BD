@@ -37,7 +37,7 @@ TEST_CASE("Operações com bitmap")
         REQUIRE(m.get(i) == i % 2);
     }
     std::vector<Field> fields{
-        Field::asInteger(), Field::asString(1), Field::asString(1), Field::asString(2), Field::asInteger(),
+        Field::asInteger(), Field::asByteArray(1), Field::asByteArray(1), Field::asByteArray(2), Field::asInteger(),
     };
     // m.m_data = "data";
     Record rec(fields);
