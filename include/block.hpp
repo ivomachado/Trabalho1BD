@@ -7,12 +7,13 @@
 
 class DiskBlock {
 public:
-    DiskBlock(std::vector<Field> recordFields);
+    DiskBlock(std::vector<Field>& recordFields);
     void ReadFromFile(FILE* file);
     void WriteToFile(FILE* file);
     static const int SIZE = 4096;
     static const int AVAILABLE_SIZE = 4092; //Menos o inteiro
     std::vector<Record> m_records;
+    short m_recordSize{ 0 };
     char m_buffer[DiskBlock::SIZE];
     std::vector<Field> m_recordFields;
     Record m_header;

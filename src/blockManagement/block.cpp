@@ -4,10 +4,13 @@
 #include <cstdio>
 #include <vector>
 
-DiskBlock::DiskBlock(std::vector<Field> recordFields)
+DiskBlock::DiskBlock(std::vector<Field>& recordFields)
 {
     m_header.m_data.emplace_back(Field::asInteger(0)); //Registros no bloco
     m_recordFields = recordFields;
+    for (auto& field : m_recordFields) {
+        m_recordSize += field.size();
+    }
 }
 
 void DiskBlock::ReadFromFile(FILE* file)
@@ -42,6 +45,9 @@ void DiskBlock::readFromBuffer()
 
 bool DiskBlock::insert(const Record& record)
 {
-    m_records.push_back(record);
-    return true;
+    if((m_records.size() + 1)*m_recordSize  <= DiskBlock::AVAILABLE_SIZE) {
+        m_records.push_back(record);
+        return true;
+    }
+    return false;
 }
