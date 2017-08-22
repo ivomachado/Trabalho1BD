@@ -100,6 +100,20 @@ bool operator==(const Field& a, const Field& b)
     return false;
 }
 
+short Field::size()
+{
+    switch (m_type) {
+    case DataTypes::Integer:
+        return 4;
+    case DataTypes::ByteArray:
+    case DataTypes::String:
+        return m_maxSize;
+    case DataTypes::Invalid:
+        return 0;
+    }
+    return 0;
+}
+
 std::ostream& operator<<(std::ostream& os, const Field& field)
 {
     switch (field.m_type) {

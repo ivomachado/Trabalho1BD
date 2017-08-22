@@ -23,6 +23,7 @@ public:
     static Field asString(short maxSize);
     static Field asByteArray(short maxSize);
     static Field asString(const char* data, short maxSize);
+    short size();
     short writeToBuffer(char* buffer, short begin);
     short readFromBuffer(char* buffer, short begin);
     friend bool operator==(const Field& a, const Field& b);
