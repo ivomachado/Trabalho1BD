@@ -1,9 +1,5 @@
 #include "hashfile.hpp"
 #include "field.hpp"
-HashFile::HashFile()
-
-{
-}
 
 HashFile::HashFile(std::string filename, std::string mode)
 {
@@ -20,7 +16,7 @@ HashFile::~HashFile()
 HashFile HashFile::Create(std::string filename)
 {
     HashFile hashfile(filename, std::string("wb+"));
-    hashfile.m_blocksMap = Utils::BitMap((DiskBlock::AVAILABLE_SIZE - 4) * 8);
+    hashfile.m_blocksMap = Utils::BitMap(HashFile::NUMBER_BLOCKS);
     return hashfile;
 }
 

@@ -11,7 +11,6 @@ class HashFile {
 public:
     int32_t insert(Record rec);
     FILE* m_file{ nullptr };
-    HashFile();
     ~HashFile();
     HashFile(std::string filename, std::string mode);
     static HashFile Create(std::string filename);
