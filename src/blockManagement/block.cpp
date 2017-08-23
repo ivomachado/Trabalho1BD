@@ -14,13 +14,13 @@ DiskBlock::DiskBlock(std::vector<Field>& recordFields)
     }
 }
 
-void DiskBlock::ReadFromFile(FILE* file)
+void DiskBlock::readFromFile(FILE* file)
 {
     fread(m_buffer, sizeof(char), DiskBlock::SIZE, file);
     readFromBuffer();
 }
 
-void DiskBlock::WriteToFile(FILE* file)
+void DiskBlock::writeToFile(FILE* file)
 {
     writeToBuffer();
     fwrite(m_buffer, sizeof(char), DiskBlock::SIZE, file);

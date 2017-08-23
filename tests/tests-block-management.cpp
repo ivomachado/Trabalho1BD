@@ -69,12 +69,12 @@ TEST_CASE("Escrita e leitura de bloco")
     SECTION("E/S em Arquivo")
     {
         FILE* file = fopen("tmp.bin", "wb+");
-        block.WriteToFile(file);
+        block.writeToFile(file);
         fclose(file);
 
         FILE* file2 = fopen("tmp.bin", "rb");
 
-        block2.ReadFromFile(file2);
+        block2.readFromFile(file2);
 
         fclose(file2);
 

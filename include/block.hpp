@@ -9,8 +9,8 @@
 class DiskBlock {
 public:
     DiskBlock(std::vector<Field>& recordFields);
-    void ReadFromFile(FILE* file);
-    void WriteToFile(FILE* file);
+    void readFromFile(FILE* file);
+    void writeToFile(FILE* file);
     static const int SIZE = 4096;
     static const int AVAILABLE_SIZE = 4088; //Menos 2 inteiros
     std::vector<Record> m_records;
