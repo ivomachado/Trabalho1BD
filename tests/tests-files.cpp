@@ -57,4 +57,5 @@ TEST_CASE("Escrita de registro no HashFile")
         REQUIRE(bIndex == HashFile::NUMBER_BLOCKS + 0);
         REQUIRE(cIndex == HashFile::NUMBER_BLOCKS + 1);
     }
+    remove("hash.bin");
 }
