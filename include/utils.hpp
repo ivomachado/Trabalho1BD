@@ -1,6 +1,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include "block.hpp"
 #include "record.hpp"
 #include <cstdint>
 #include <iostream>
@@ -102,6 +103,11 @@ public:
         }
     }
 };
+
+inline int32_t calcBlockOffset(int32_t blockIndex)
+{
+    return (blockIndex + 1) * DiskBlock::SIZE;
+}
 }
 
 #endif // !UTILS_HPP
