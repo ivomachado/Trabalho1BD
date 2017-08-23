@@ -29,13 +29,13 @@ void DiskBlock::writeToFile(FILE* file)
 void DiskBlock::writeToBuffer()
 {
     m_header.m_data[0].m_integer = static_cast<int>(m_records.size());
-    m_bufferPos = m_header.writeToBuffer(m_buffer, m_bufferPos);
+    m_bufferPos = m_header.writeToBuffer(m_buffer, 0);
     m_bufferPos = Utils::writeVectorToBuffer(m_buffer, m_records, m_bufferPos);
 }
 
 void DiskBlock::readFromBuffer()
 {
-    m_bufferPos = m_header.readFromBuffer(m_buffer, m_bufferPos);
+    m_bufferPos = m_header.readFromBuffer(m_buffer, 0);
     int numberOfRecords = m_header.m_data[0].m_integer;
     m_records.resize(0);
     for (int i = 0; i < numberOfRecords; i++) {
