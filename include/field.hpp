@@ -23,6 +23,7 @@ public:
     static Field asString(short maxSize);
     static Field asByteArray(short maxSize);
     static Field asString(const char* data, short maxSize);
+    int32_t hash(int32_t size);
     short size();
     short writeToBuffer(char* buffer, short begin);
     short readFromBuffer(char* buffer, short begin);

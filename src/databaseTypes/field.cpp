@@ -1,6 +1,7 @@
 #include "field.hpp"
 #include "utils.hpp"
 #include <cstdio>
+#include <functional>
 #include <cstring>
 
 Field::Field(DataTypes type)
@@ -108,6 +109,19 @@ short Field::size()
     case DataTypes::ByteArray:
     case DataTypes::String:
         return m_maxSize;
+    case DataTypes::Invalid:
+        return 0;
+    }
+    return 0;
+}
+
+int32_t Field::hash(int32_t size) {
+    switch (m_type) {
+    case DataTypes::Integer:
+        return std::hash<int32_t>{}(m_integer) % size;
+    case DataTypes::String:
+    case DataTypes::ByteArray:
+        return std::hash<std::string>{}(m_string) % size;
     case DataTypes::Invalid:
         return 0;
     }
