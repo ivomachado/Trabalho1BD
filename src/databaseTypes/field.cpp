@@ -17,7 +17,6 @@ Field Field::asInteger()
 Field Field::asString(short maxSize)
 {
     Field field(DataTypes::String);
-    field.m_string = new char[maxSize];
     field.m_maxSize = maxSize;
     return field;
 }
@@ -49,7 +48,7 @@ short Field::writeToBuffer(char* buffer, short begin)
     switch (m_type) {
     case DataTypes::Integer:
         Utils::intToCharArray(m_integer, buffer + begin);
-        return begin + sizeof(int);
+        return begin + 4;
     case DataTypes::String:
         strcpy(buffer + begin, m_string.c_str());
         return m_maxSize + begin;
@@ -70,7 +69,7 @@ short Field::readFromBuffer(char* buffer, short begin)
     case DataTypes::Integer:
         sscanf(buffer + begin, "%d", &m_integer);
         m_integer = Utils::charArrayToInt(buffer + begin);
-        return begin + sizeof(int);
+        return begin + 4;
     case DataTypes::String:
         m_string = std::string(buffer + begin);
         return m_maxSize + begin;

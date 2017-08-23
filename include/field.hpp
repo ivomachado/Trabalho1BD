@@ -17,7 +17,7 @@ public:
     Field(DataTypes type);
     Field() {}
     int32_t m_integer;
-    std::string m_string;
+    std::string m_string{""};
     static Field asInteger();
     static Field asInteger(int32_t value);
     static Field asString(short maxSize);
