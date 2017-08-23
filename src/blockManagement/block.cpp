@@ -7,6 +7,7 @@
 DiskBlock::DiskBlock(std::vector<Field>& recordFields)
 {
     m_header.m_data.emplace_back(Field::asInteger(0)); //Registros no bloco
+    m_header.m_data.emplace_back(Field::asInteger(0)); //Apontador para o de overflow
     m_recordFields = recordFields;
     for (auto& field : m_recordFields) {
         m_recordSize += field.size();
