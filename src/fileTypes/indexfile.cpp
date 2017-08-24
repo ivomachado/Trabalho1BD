@@ -1,4 +1,5 @@
 #include "indexfile.hpp"
+#include "block.hpp"
 #include <vector>
 
 
@@ -12,31 +13,31 @@ IndexFile::~IndexFile(){
     }
 }
 
-IndexFile::Create(std::string filename){
-    Index indexfile(filename, std::string("wb+"));
+IndexFile IndexFile::Create(std::string filename){
+    IndexFile indexfile(filename, std::string("wb+"));
     return indexfile;
 }
 
-IndexFile::Open(std::string filename){
-    Index indexfile(filename, std::string("rb+"));
+IndexFile IndexFile::Open(std::string filename){
+    IndexFile indexfile(filename, std::string("rb+"));
     indexfile.readHeaderFromDisk();
     return indexfile;
 }
 
-IndexFile::writeHeaderToDisk(){
+void IndexFile::writeHeaderToDisk(){
     std::vector<Field> firstBlockFields{Field::asInteger(m_locatedBlocks), Field::asInteger(m_root)};
     DiskBlock firstBlock(firstBlockFields);
     Record header(firstBlockFields);
     firstBlock.insert(header);
     fseek(m_file, 0, SEEK_SET);
-    firstBlock.WriteToFile(m_file);
+    firstBlock.writeToFile(m_file);
 }
 
-IndexFile::readHeaderFromDisk(){
+void IndexFile::readHeaderFromDisk(){
     std::vector<Field> firstBlockFields{Field::asInteger(), Field::asInteger()};
     DiskBlock firstBlock(firstBlockFields);
     firstBlock.readFromFile(m_file);
-    m_locatedBlocks = firstBlock.m_records[0].m_data[0],m_integer;
+    m_locatedBlocks = firstBlock.m_records[0].m_data[0].m_integer;
     m_root = firstBlock.m_records[0].m_data[1].m_integer;
        
 }
