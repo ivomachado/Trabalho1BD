@@ -49,15 +49,17 @@ int IndexFile::findLocation(Field field, DiskBlock block){
     if(field.m_string <= block.m_records.front().m_data[0].m_string) return -1;
     if(field.m_string > block.m_records.back().m_data[0].m_string) return block.m_records.size()-1;
     
-    for(int i = 0; i < (block.m_records.size()-1); i++){
+    for(size_t i = 0; i < (block.m_records.size()-1); i++){
         if(field.m_string > block.m_records[i].m_data[0].m_string && field.m_string <= block.m_records[i+1].m_data[0].m_string){
             return i;
         }
     }
+
+    return -2;
 }
 
 bool IndexFile::isLeaf(DiskBlock block){
-    for(int i = 0; i < block.m_records.size(); i++){
+    for(size_t i = 0; i < block.m_records.size(); i++){
         if(block.m_records[i].m_data[2].m_integer != -1){
             return false;
         }
@@ -79,14 +81,14 @@ void IndexFile::split(DiskBlock &parent, DiskBlock &child, int32_t parentOffset,
     int half = child.m_records.size()/2;
 
     //copy the second half of the child to the new child
-    newChild.m_records(child.m_records.begin()+(half+1), child.m_records.end());
+    newChild.m_records.assign(child.m_records.begin()+(half+1), child.m_records.end());
 
     //insert in the parent the element that is the middle of the child
-    std::vector<Field> recordFields{Field::asString(child.m_records[half].m_data[0].m_string, 300),
+    std::vector<Field> recordFields{Field::asString(child.m_records[half].m_data[0].m_string.c_str(), 300),
             Field::asInteger(child.m_records[half].m_data[1].m_integer), 
             Field::asInteger(Utils::calcBlockOffset(m_locatedBlocks))};
     Record record(recordFields);
-    parent.m_records.insert(record);
+    parent.m_records.push_back(record);
 
     //erase the second half of the child
     child.m_records.erase(child.m_records.begin()+half, child.m_records.end());
@@ -113,7 +115,7 @@ void IndexFile::insertNonFull(DiskBlock &block, int32_t blockOffset, Field field
 
     //if leaf insert and write to file
     if(isLeaf(block)){
-        std::vector<Field> recordFields{Field::asString(field), Field::asInteger(blockIndex), Field::asInteger(-1)};
+        std::vector<Field> recordFields{Field::asString(field.m_string.c_str(), 300), Field::asInteger(blockIndex), Field::asInteger(-1)};
         Record record(recordFields);
         
         block.insert(record);
@@ -149,7 +151,7 @@ void IndexFile::insert(Field field, int32_t blockIndex){
     readHeaderFromDisk();
 
     std::vector<Field> blockFields{Field::asString(300), Field::asInteger(), Field::asInteger()};
-    std::vector<Field> recordFields{Field::asString(field), Field::asInteger(blockIndex), Field::asInteger(-1)};
+    std::vector<Field> recordFields{Field::asString(field.m_string.c_str(), 300), Field::asInteger(blockIndex), Field::asInteger(-1)};
     Record record(recordFields);
 
     //tree has no element
