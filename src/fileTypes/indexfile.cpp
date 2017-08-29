@@ -125,7 +125,10 @@ void insertNonFull(DiskBlock &block, int32_t blockOffset, Field field, int32_t b
         int index = findLocation(field, block);
 
         //read the child
-        fseek(m_file, block.m_records[index].m_data[1].asInteger);
+
+        //if the child is pointed by the overflow pointer
+        if(index == -1) fseek(m_file, block.m_header.m_data[1].asInteger, SEEK_SET);
+        else fseek(m_file, block.m_records[index].m_data[1].asInteger, SEEK_SET);
         DiskBlock child(blockFields);
         child.readFromFile(m_file);
        
