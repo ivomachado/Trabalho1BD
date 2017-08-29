@@ -46,18 +46,18 @@ void IndexFile::readHeaderFromDisk(){
 
 int findLocation(Field field, DiskBlock block){
 
-    if(field < block.m_records.front().m_data[0].asString) return -1;
-    if(field > block.m_records.back().m_data[0].asString) return block.m_records.size()-1;
+    if(field.m_string <= block.m_records.front().m_data[0].m_string) return -1;
+    if(field.m_string > block.m_records.back().m_data[0].m_string) return block.m_records.size()-1;
     
-    for(int i = 0; i < block.m_records.size()-1){
-        if(field > block.m_records[i].m_data[0].asString && field < block.m_records[i+1].m_data.m_string){
+    for(int i = 0; i < (block.m_records.size()-1); i++){
+        if(field.m_string > block.m_records[i].m_data[0].m_string && field.m_string <= block.m_records[i+1].m_data[0].m_string){
             return i;
         }
     }
 }
 
 bool isLeaf(DiskBlock block){
-    for(int i = 0; i < block.m_records.size()){
+    for(int i = 0; i < block.m_records.size(); i++){
         if(block.m_records[i].m_data[2].m_integer != -1){
             return false;
         }
@@ -66,7 +66,7 @@ bool isLeaf(DiskBlock block){
     return true;
 }
 
-void compare(Record r1, Record r2){
+bool compare(Record r1, Record r2){
     if (r1.m_data[0].m_string == r2.m_data[0].m_string) return false;
     return (r1.m_data[0].m_string > r2.m_data[0].m_string);
 }
@@ -82,14 +82,14 @@ void split(DiskBlock &parent, DiskBlock &child, int32_t parentOffset, int32_t ch
     newChild.m_records(child.m_records.begin()+(half+1), child.m_records.end());
 
     //insert in the parent the element that is the middle of the child
-    std::vector<Field> recordFields{Field::asString(child.m_records[middle].m_data[0].asString),
-            Field::asInteger(child.m_records[middle].m_data[1].asInteger), 
+    std::vector<Field> recordFields{Field::asString(child.m_records[half].m_data[0].m_string),
+            Field::asInteger(child.m_records[half].m_data[1].m_integer), 
             Field::asInteger(Utils::calcBlockOffset(m_locatedBlocks))};
     Record record(recordFields);
     parent.m_records.insert(record);
 
     //erase the second half of the child
-    child.m_records.erase(child.begin()+half, child.m_records.end());
+    child.m_records.erase(child.m_records.begin()+half, child.m_records.end());
 
 
     //write to file all the blocks
@@ -127,18 +127,18 @@ void insertNonFull(DiskBlock &block, int32_t blockOffset, Field field, int32_t b
         //read the child
 
         //if the child is pointed by the overflow pointer
-        if(index == -1) fseek(m_file, block.m_header.m_data[1].asInteger, SEEK_SET);
-        else fseek(m_file, block.m_records[index].m_data[1].asInteger, SEEK_SET);
+        if(index == -1) fseek(m_file, block.m_header.m_data[1].m_integer, SEEK_SET);
+        else fseek(m_file, block.m_records[index].m_data[1].m_integer, SEEK_SET);
         DiskBlock child(blockFields);
         child.readFromFile(m_file);
        
         //child is full
-        if(rootBlock.m_header.m_data[0].m_integer * m_recordSize == rootBlock.AVAILABLE_SIZE){
+        if(child.m_header.m_data[0].m_integer * child.m_recordSize == child.AVAILABLE_SIZE){
 
-            split(block, child, blockOffset, block.m_records[index].m_data[1].asInteger);
+            split(block, child, blockOffset, block.m_records[index].m_data[1].m_integer);
         }
        
-        insertNonFull(child,block.m_records[index].m_data[1].asInteger, field, blockIndex);
+        insertNonFull(child,block.m_records[index].m_data[1].m_integer, field, blockIndex);
               
     }
 }
@@ -173,7 +173,7 @@ void IndexFile::insert(Field field, int32_t blockIndex){
         rootBlock.readFromFile(m_file);
 
         //root is full
-        if(rootBlock.m_header.m_data[0].m_integer * m_recordSize == rootBlock.AVAILABLE_SIZE){
+        if(rootBlock.m_header.m_data[0].m_integer * rootBlock.m_recordSize == rootBlock.AVAILABLE_SIZE){
 
             //create a new block
             DiskBlock newBlock(blockFields);
