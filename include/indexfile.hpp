@@ -15,16 +15,16 @@ class IndexFile{
     ~IndexFile();
     static IndexFile Create(std::string filename);
     static IndexFile Open(std::string filename);
-    void insert(Field field, int32_t blockIndex);
+    void insert(Field field, int32_t dataBlockIndex);
     void writeHeaderToDisk();
     void readHeaderFromDisk();
-    //void search(Field field);
+    int32_t search(Field field);
 
 
     int findLocation(Field field, DiskBlock block);
     bool isLeaf(DiskBlock block);
     bool compare(Record r1, Record r2);
     void split(DiskBlock &parent, DiskBlock &child, int32_t parentOffset, int32_t childOffset);
-    void insertNonFull(DiskBlock &block, int32_t blockOffset, Field field, int32_t blockIndex);
+    void insertNonFull(DiskBlock &block, int32_t blockOffset, Field field, int32_t dataBlockIndex);
 };
 #endif
