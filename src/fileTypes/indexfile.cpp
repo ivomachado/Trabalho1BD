@@ -51,13 +51,13 @@ void IndexFile::readHeaderFromDisk()
 int IndexFile::findLocation(Field field, DiskBlock block)
 {
 
-    if (field.m_string <= block.m_records.front().m_data[0].m_string)
+    if (field <= block.m_records.front().m_data[0])
         return -1;
-    if (field.m_string > block.m_records.back().m_data[0].m_string)
+    if (field > block.m_records.back().m_data[0])
         return block.m_records.size() - 1;
 
     for (size_t i = 0; i < (block.m_records.size() - 1); i++) {
-        if (field.m_string > block.m_records[i].m_data[0].m_string && field.m_string <= block.m_records[i + 1].m_data[0].m_string) {
+        if (field > block.m_records[i].m_data[0] && field <= block.m_records[i + 1].m_data[0]) {
             return i;
         }
     }
@@ -80,7 +80,7 @@ bool IndexFile::compare(Record r1, Record r2)
 {
     if (r1.m_data[0] == r2.m_data[0])
         return false;
-    return (r1.m_data[0].m_string > r2.m_data[0].m_string);
+    return (r1.m_data[0] > r2.m_data[0]);
 }
 
 void IndexFile::split(DiskBlock& parent, DiskBlock& child, int32_t parentOffset, int32_t childOffset)
