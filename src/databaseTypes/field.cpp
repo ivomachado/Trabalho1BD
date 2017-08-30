@@ -1,8 +1,8 @@
 #include "field.hpp"
 #include "utils.hpp"
 #include <cstdio>
-#include <functional>
 #include <cstring>
+#include <functional>
 
 Field::Field(DataTypes type)
     : m_type{ type }
@@ -100,6 +100,40 @@ bool operator==(const Field& a, const Field& b)
     return false;
 }
 
+bool operator!=(const Field& a, const Field& b)
+{
+    return !(a == b);
+}
+
+bool operator>(const Field& a, const Field& b)
+{
+    switch (a.m_type) {
+    case DataTypes::Integer:
+        return a.m_integer > b.m_integer;
+    case DataTypes::String:
+    case DataTypes::ByteArray:
+        return a.m_string > b.m_string;
+    case DataTypes::Invalid:
+        return false;
+    }
+    return false;
+}
+
+bool operator>=(const Field& a, const Field& b)
+{
+    return (a == b) || (a > b);
+}
+
+bool operator<(const Field& a, const Field& b)
+{
+    return b > a;
+}
+
+bool operator<=(const Field& a, const Field& b)
+{
+    return b >= a;
+}
+
 short Field::size()
 {
     switch (m_type) {
@@ -114,7 +148,8 @@ short Field::size()
     return 0;
 }
 
-int32_t Field::hash(int32_t size) {
+int32_t Field::hash(int32_t size)
+{
     switch (m_type) {
     case DataTypes::Integer:
         return std::hash<int32_t>{}(m_integer) % size;

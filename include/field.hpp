@@ -28,6 +28,11 @@ public:
     short writeToBuffer(char* buffer, short begin);
     short readFromBuffer(char* buffer, short begin);
     friend bool operator==(const Field& a, const Field& b);
+    friend bool operator!=(const Field& a, const Field& b);
+    friend bool operator>(const Field& a, const Field& b);
+    friend bool operator<(const Field& a, const Field& b);
+    friend bool operator<=(const Field& a, const Field& b);
+    friend bool operator>=(const Field& a, const Field& b);
     friend std::ostream& operator<<(std::ostream& os, const Field& field);
 };
 
