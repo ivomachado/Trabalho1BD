@@ -44,9 +44,13 @@ void DiskBlock::readFromBuffer()
     m_bufferPos = Utils::readVectorFromBuffer(m_buffer, m_records, m_bufferPos);
 }
 
+bool DiskBlock::fitOneMoreRecord() {
+    return (m_records.size() + 1) * m_recordSize <= DiskBlock::AVAILABLE_SIZE;
+}
+
 bool DiskBlock::insert(const Record& record)
 {
-    if((m_records.size() + 1)*m_recordSize  <= DiskBlock::AVAILABLE_SIZE) {
+    if(fitOneMoreRecord()) {
         m_records.push_back(record);
         return true;
     }

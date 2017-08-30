@@ -35,6 +35,8 @@ public:
     void readFromBuffer();
     /** Tenta inserir um novo registro no bloco caso o registro caiba no bloco */
     bool insert(const Record& record);
+    /** Informa se ainda cabe mais um registro no bloco */
+    bool fitOneMoreRecord();
 };
 
 #endif // !BLOCK_HPP
