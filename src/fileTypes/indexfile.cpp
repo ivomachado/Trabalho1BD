@@ -133,6 +133,9 @@ void IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field field
         std::sort(block.m_records.begin(), block.m_records.end(), [](const Record& a, const Record& b) -> bool {
             return a.m_data[0] <= b.m_data[0];
         });
+        if(block.m_records.size() > m_order) {
+            //fazer split
+        }
         fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
         block.writeToFile(m_file);
     } else {
@@ -151,23 +154,30 @@ void IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field field
         child.readFromFile(m_file);
 
         //child is full
-        if (!child.fitOneMoreRecord()) {
-
+        if (child.m_records.size() == m_order) {
             split(block, child, blockOffset, block.m_records[index].m_data[1].m_integer);
+        } else {
+            insertNonFull(child, block.m_records[index].m_data[1].m_integer, field, dataBlockIndex);
         }
 
-        insertNonFull(child, block.m_records[index].m_data[1].m_integer, field, dataBlockIndex);
     }
 }
 
 void IndexFile::insert(Field field, int32_t dataBlockIndex)
 {
 
-    readHeaderFromDisk();
-
     std::vector<Field> blockFields{ field, Field::asInteger(), Field::asInteger() };
     std::vector<Field> recordFields{ field, Field::asInteger(dataBlockIndex), Field::asInteger(-1) };
     Record record(recordFields);
+    if(m_order == 0)
+    {
+        int recordSize = 0;
+        for (auto& field : recordFields) {
+            recordSize += field.size();
+        }
+        m_order = DiskBlock::AVAILABLE_SIZE / recordSize;
+        m_order = m_order % 2 == 1 ? m_order - 1 : m_order;
+    }
 
     //tree has no element
     if (m_locatedBlocks == 0) {
@@ -189,18 +199,18 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
         rootBlock.readFromFile(m_file);
 
         //root is full
-        if (!rootBlock.fitOneMoreRecord()) {
-
+        if (rootBlock.m_records.size() == m_order) {
+            
             //create a new block
             DiskBlock newBlock(blockFields);
-
+            
             //overflow pointer of the new block point the root
             newBlock.m_header.m_data[1].m_integer = m_root;
-
+            
             //new block became the root
             m_root = m_locatedBlocks;
             m_locatedBlocks++;
-
+            
             //split the old root
             split(newBlock, rootBlock, m_root, newBlock.m_header.m_data[1].m_integer);
             insertNonFull(newBlock, m_root, field, dataBlockIndex);
@@ -215,14 +225,14 @@ int32_t IndexFile::search(Field field)
     std::vector<Field> blockFields{ field, Field::asInteger(), Field::asInteger() };
     int32_t blockOffset = m_root;
     DiskBlock block(blockFields);
-    while(true) {
+    while (true) {
         if (blockOffset == -1) {
             return -1;
         }
         fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
         block.readFromFile(m_file);
         int32_t index = findLocation(field, block);
-        if(block.m_records[index+1].m_data[0] == field) {
+        if (block.m_records[index + 1].m_data[0] == field) {
             return block.m_records[index + 1].m_data[1].m_integer;
         }
         // TODO: verificar se não é uma folha

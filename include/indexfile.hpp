@@ -10,7 +10,7 @@ class IndexFile{
     public:
     FILE *m_file;
     int32_t m_locatedBlocks{0};
-    int32_t m_root{0};
+    int32_t m_root{-1};
     IndexFile(std::string filename, std::string mode);
     ~IndexFile();
     static IndexFile Create(std::string filename);
@@ -19,7 +19,7 @@ class IndexFile{
     void writeHeaderToDisk();
     void readHeaderFromDisk();
     int32_t search(Field field);
-
+    size_t m_order{0};
 
     int findLocation(Field field, DiskBlock block);
     bool isLeaf(DiskBlock block);
