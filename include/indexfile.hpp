@@ -25,6 +25,7 @@ class IndexFile{
     bool isLeaf(DiskBlock block);
     bool compare(Record r1, Record r2);
     void split(DiskBlock &parent, DiskBlock &child, int32_t parentOffset, int32_t childOffset);
-    void insertNonFull(DiskBlock &block, int32_t blockOffset, Field field, int32_t dataBlockIndex);
+    Record split(DiskBlock& block);
+    Record insertNonFull(DiskBlock& block, int32_t blockOffset, Field field, int32_t dataBlockIndex);
 };
 #endif
