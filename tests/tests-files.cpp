@@ -35,29 +35,40 @@ TEST_CASE("Escrita de registro no HashFile")
     recordFields.emplace_back(Field::asInteger());
     recordFields.emplace_back(Field::asString(DiskBlock::AVAILABLE_SIZE - 4));
     int32_t aIndex, bIndex, cIndex;
+    int32_t eaIndex, ebIndex, ecIndex;
+    HashFile hashfile = HashFile::Create("hash.bin");
 
     Record a(recordFields), b(recordFields), c(recordFields);
-
-    a.m_data[0].m_integer = 2;
     a.m_data[1].m_string = string("bankai");
-
-    b.m_data[0].m_integer = 2;
     b.m_data[1].m_string = string("shikai");
-
-    c.m_data[0].m_integer = 2;
     c.m_data[1].m_string = string("cero");
 
-    string firstBitMap;
-    {
-        HashFile hashfile = HashFile::Create("hash.bin");
+    SECTION("Com colisão") {
+        a.m_data[0].m_integer = 2;
+        b.m_data[0].m_integer = 2;
+        c.m_data[0].m_integer = 2;
         aIndex = hashfile.insert(a);
         bIndex = hashfile.insert(b);
         cIndex = hashfile.insert(c);
+        eaIndex = 2;
+        ebIndex = HashFile::NUMBER_BLOCKS + 0;
+        ecIndex = HashFile::NUMBER_BLOCKS + 1;
         REQUIRE(hashfile.m_overflowBlocks == 2);
-        REQUIRE(aIndex == 2);
-        REQUIRE(bIndex == HashFile::NUMBER_BLOCKS + 0);
-        REQUIRE(cIndex == HashFile::NUMBER_BLOCKS + 1);
     }
+
+    SECTION("Sem Colisão") {
+        eaIndex = a.m_data[0].m_integer = 2;
+        ebIndex = b.m_data[0].m_integer = 3;
+        ecIndex = c.m_data[0].m_integer = 4;
+        aIndex = hashfile.insert(a);
+        bIndex = hashfile.insert(b);
+        cIndex = hashfile.insert(c);
+        REQUIRE(hashfile.m_overflowBlocks == 0);
+    }
+
+    REQUIRE(aIndex == eaIndex);
+    REQUIRE(bIndex == ebIndex);
+    REQUIRE(cIndex == ecIndex);
     remove("hash.bin");
 }
 
