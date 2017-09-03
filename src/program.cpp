@@ -25,7 +25,7 @@ void upload(string filename = "teste.csv")
         primaryIndex.insert(rec.m_data[0], blockIndex);
         secondaryIndex.insert(rec.m_data[1], blockIndex);
         totalInserted++;
-        if(totalInserted%1000) {
+        if (totalInserted % 1000 == 0) {
             cout << totalInserted << " registros inseridos\n";
         }
     }
