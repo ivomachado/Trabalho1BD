@@ -108,9 +108,9 @@ public:
     }
 };
 
-inline int32_t calcBlockOffset(int32_t blockIndex, int32_t headerOverhead = 1)
+inline int64_t calcBlockOffset(int32_t blockIndex, int32_t headerOverhead = 1)
 {
-    return (blockIndex + headerOverhead) * DiskBlock::SIZE;
+    return (static_cast<int64_t>(blockIndex) + static_cast<int64_t>(headerOverhead)) * static_cast<int64_t>(DiskBlock::SIZE);
 }
 }
 
