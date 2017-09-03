@@ -73,35 +73,26 @@ TEST_CASE("Escrita de registro no HashFile")
 }
 
 TEST_CASE("Escrita de registro no Indexfile") {
-    Field field1 = Field::asString("1",1024);
-    Field field2 = Field::asString("2",1024);
-    Field field3 = Field::asString("3",1024);
-    Field field4 = Field::asString("4",1024);
-    Field field5 = Field::asString("5",1024);
-    Field field6 = Field::asString("6",1024);
-    Field field7 = Field::asString("7",1024);
-    Field field8 = Field::asString("8",1024);
+    const int TESTS_NUMBER = 200000;
+    vector<Field> fields(TESTS_NUMBER);
+    for (int i = 0; i < TESTS_NUMBER; i++) {
+        stringstream s;
+        s << i;
+        fields[i] = Field::asString(s.str().c_str(), 128);
+        // fields[i] = Field::asInteger(i);
+    }
     {
         IndexFile indexFile = IndexFile::Create("index.bin");
-        indexFile.insert(field1, 1);
-        indexFile.insert(field2, 2);
-        indexFile.insert(field3, 3);
-        indexFile.insert(field4, 4);
-        indexFile.insert(field5, 5);
-        indexFile.insert(field6, 6);
-        indexFile.insert(field7, 7);
-        indexFile.insert(field8, 8);
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            indexFile.insert(fields[i], i);
+        }
+        WARN(indexFile.m_order);
     }
 
     {
         IndexFile indexFile = IndexFile::Open("index.bin");
-        REQUIRE(indexFile.search(field1) == 1);
-        REQUIRE(indexFile.search(field2) == 2);
-        REQUIRE(indexFile.search(field3) == 3);
-        REQUIRE(indexFile.search(field4) == 4);
-        REQUIRE(indexFile.search(field5) == 5);
-        REQUIRE(indexFile.search(field6) == 6);
-        REQUIRE(indexFile.search(field7) == 7);
-        REQUIRE(indexFile.search(field8) == 8);
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            REQUIRE(indexFile.search(fields[i]) == i);
+        }
     }
 }
