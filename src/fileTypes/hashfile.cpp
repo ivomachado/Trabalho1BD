@@ -114,7 +114,7 @@ std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> reco
                 }
             }
             blockIndex = choosenBlock.m_header.m_data[1].m_integer;
-        } while (blockIndex != -1);
+        } while (blockIndex != 0);
     }
     return std::make_pair(Record(), -1);
 }
