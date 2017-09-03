@@ -81,15 +81,14 @@ TEST_CASE("Escrita de registro no Indexfile") {
         // fields[i] = Field::asString(s.str().c_str(), 128);
         fields[i] = Field::asInteger(i);
     }
-    {
+    SECTION("Inserção em massa") {
         IndexFile indexFile = IndexFile::Create("index.bin");
         for (int i = 0; i < TESTS_NUMBER; i++) {
             indexFile.insert(fields[i], i);
         }
-        WARN(indexFile.m_order);
     }
 
-    {
+    SECTION("Busca em massa") {
         IndexFile indexFile = IndexFile::Open("index.bin");
         for (int i = 0; i < TESTS_NUMBER; i++) {
             REQUIRE(indexFile.search(fields[i]) == i);
