@@ -80,13 +80,6 @@ bool IndexFile::isLeaf(DiskBlock block)
     return true;
 }
 
-bool IndexFile::compare(Record r1, Record r2)
-{
-    if (r1.m_data[0] == r2.m_data[0])
-        return false;
-    return (r1.m_data[0] > r2.m_data[0]);
-}
-
 Record IndexFile::split(DiskBlock& block)
 {
     DiskBlock newBlock(block.m_recordFields);
