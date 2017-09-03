@@ -48,13 +48,15 @@ public:
         : BitMap(0)
     {
     }
-    BitMap(const std::vector<Record>& data)
+    BitMap(const std::vector<DiskBlock>& data)
     {
-        for (auto& rec : data) {
-            for (auto& field : rec.m_data) {
-                if (field.m_type == DataTypes::ByteArray) {
-                    for (int i = 0; i < field.m_maxSize; i++) {
-                        m_data += field.m_string[i];
+        for (auto& block : data) {
+            for (auto& rec : block.m_records) {
+                for (auto& field : rec.m_data) {
+                    if (field.m_type == DataTypes::ByteArray) {
+                        for (int i = 0; i < field.m_maxSize; i++) {
+                            m_data += field.m_string[i];
+                        }
                     }
                 }
             }
@@ -88,25 +90,27 @@ public:
         m_data[charIndex] = value ? m_data[charIndex] | (1 << bitIndex) : m_data[charIndex] & (~(1 << bitIndex));
     }
 
-    void write(std::vector<Record>& data)
+    void write(std::vector<DiskBlock>& data)
     {
         int pos = 0;
-        for (auto& rec : data) {
-            for (auto& field : rec.m_data) {
-                if (field.m_type == DataTypes::ByteArray) {
-                    for (int i = 0; i < field.m_maxSize; i++) {
-                        field.m_string[i] = m_data[pos + i];
+        for (auto& block : data) {
+            for (auto& rec : block.m_records) {
+                for (auto& field : rec.m_data) {
+                    if (field.m_type == DataTypes::ByteArray) {
+                        for (int i = 0; i < field.m_maxSize; i++) {
+                            field.m_string[i] = m_data[pos + i];
+                        }
+                        pos += field.m_maxSize;
                     }
-                    pos += field.m_maxSize;
                 }
             }
         }
     }
 };
 
-inline int32_t calcBlockOffset(int32_t blockIndex)
+inline int32_t calcBlockOffset(int32_t blockIndex, int32_t headerOverhead = 1)
 {
-    return (blockIndex + 1) * DiskBlock::SIZE;
+    return (blockIndex + headerOverhead) * DiskBlock::SIZE;
 }
 }
 
