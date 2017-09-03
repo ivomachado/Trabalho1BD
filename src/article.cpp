@@ -83,3 +83,13 @@ Record Article::toRecord()
 {
     return Record(getFields());
 }
+
+void Article::fromRecord(Record rec) {
+    m_id = rec.m_data[0].m_integer;
+    strcpy(m_title, rec.m_data[1].m_string.c_str());
+    m_year = rec.m_data[2].m_integer;
+    strcpy(m_authors, rec.m_data[3].m_string.c_str());
+    m_quotes = rec.m_data[4].m_integer;
+    strcpy(m_updateTime, rec.m_data[5].m_string.c_str());
+    strcpy(m_snippet, rec.m_data[6].m_string.c_str());
+}

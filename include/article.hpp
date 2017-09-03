@@ -3,6 +3,7 @@
 
 #include "record.hpp"
 #include <string>
+#include <iostream>
 
 /** 
  * Artigos
@@ -28,8 +29,21 @@ public:
     Article();
 
     Record toRecord();
+    void fromRecord(Record rec);
 
     std::vector<Field> getFields();
+
+    friend std::ostream& operator<<(std::ostream& os, const Article& article)
+    {
+        os << "ID: " << article.m_id << '\n';
+        os << "TITLE: " << article.m_title << '\n';
+        os << "YEAR: " << article.m_year << '\n';
+        os << "AUTHORS: " << article.m_authors << '\n';
+        os << "QUOTES: " << article.m_quotes << '\n';
+        os << "UPDATE_TIME: " << article.m_updateTime << '\n';
+        os << "SNIPPET: " << article.m_snippet << '\n';
+        return os;
+    }
 };
 
 #endif
