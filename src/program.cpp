@@ -12,6 +12,11 @@
 
 using namespace std;
 
+/**
+ * \author Ivo Machado
+ * 
+ * Abre o arquivo passado e gera um arquivo de dados, e dois de índice para este de dados
+ */
 void upload(string filename = "teste.csv")
 {
     FILE* file = fopen(filename.c_str(), "r");
@@ -32,6 +37,11 @@ void upload(string filename = "teste.csv")
     fclose(file);
 }
 
+/**
+ * \author Ivo Machado
+ * 
+ * Procura o id no arquivo de dados usando hashing
+ */
 void findrec(int32_t id)
 {
     HashFile dataFile = HashFile::Open("data.bin");
@@ -48,6 +58,11 @@ void findrec(int32_t id)
     }
 }
 
+/**
+ * \author Ivo Machado
+ * 
+ * Procura o id no arquivo de índice primário
+ */
 void seek1(int32_t id)
 {
     HashFile dataFile = HashFile::Open("data.bin");
@@ -65,6 +80,11 @@ void seek1(int32_t id)
     }
 }
 
+/**
+ * \author Ivo Machado
+ * 
+ * Procura o título no arquivo de índice secundário
+ */
 void seek2(string title)
 {
     HashFile dataFile = HashFile::Open("data.bin");
