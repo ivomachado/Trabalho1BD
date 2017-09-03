@@ -9,6 +9,7 @@ HashFile::HashFile(std::string filename, std::string mode)
 HashFile::~HashFile()
 {
     if (m_file != nullptr) {
+        writeHeaderToDisk( );
         fclose(m_file);
     }
 }
@@ -74,7 +75,7 @@ int32_t HashFile::insert(Record rec)
         choosenBlock.readFromFile(m_file);
     } else {
         m_blocksMap.set(blockIndex, true);
-        writeHeaderToDisk();
+        // writeHeaderToDisk();
         fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
     }
     while (!choosenBlock.insert(rec)) {
@@ -83,7 +84,7 @@ int32_t HashFile::insert(Record rec)
             blockIndex = choosenBlock.m_header.m_data[1].m_integer = HashFile::NUMBER_BLOCKS + m_overflowBlocks++;
             fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
             choosenBlock.writeToFile(m_file);
-            writeHeaderToDisk();
+            // writeHeaderToDisk();
             fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
             choosenBlock.m_header.m_data[0].m_integer = 0;
             choosenBlock.m_header.m_data[1].m_integer = 0;

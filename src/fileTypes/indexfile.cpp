@@ -12,6 +12,7 @@ IndexFile::IndexFile(std::string filename, std::string mode)
 IndexFile::~IndexFile()
 {
     if (m_file != nullptr) {
+        writeHeaderToDisk();
         fclose(m_file);
     }
 }
@@ -95,7 +96,7 @@ Record IndexFile::split(DiskBlock& block)
     block.m_records.erase(block.m_records.begin() + middle, block.m_records.end());
     newBlock.m_header.m_data[1].m_integer = middleKeyRecord.m_data[2].m_integer;
     middleKeyRecord.m_data[2].m_integer = m_locatedBlocks;
-    writeHeaderToDisk();
+    // writeHeaderToDisk();
     fseek(m_file, Utils::calcBlockOffset(m_locatedBlocks), SEEK_SET);
     newBlock.writeToFile(m_file);
     m_locatedBlocks++;
@@ -181,7 +182,7 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
         m_root = 0;
         m_locatedBlocks++;
 
-        writeHeaderToDisk();
+        // writeHeaderToDisk();
         fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
         rootBlock.writeToFile(m_file);
     } else {
@@ -199,7 +200,7 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
             m_locatedBlocks++;
             fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
             newRoot.writeToFile(m_file);
-            writeHeaderToDisk();
+            // writeHeaderToDisk();
         }
     }
 }
