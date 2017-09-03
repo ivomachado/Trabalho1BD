@@ -39,10 +39,12 @@ void findrec(int32_t id)
     std::pair<Record, int32_t> searchResult = dataFile.search(Field::asInteger(id), article.getFields());
     if(searchResult.first.m_data.size() > 0) {
         cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
+        fseek(dataFile.m_file, 0, SEEK_END);
+        cout << "Há " << ftell(dataFile.m_file) / DiskBlock::SIZE << " blocos no arquivo de índice primário\n\n";
         article.fromRecord(searchResult.first);
-        cout << article;
+        cout << article << '\n';
     } else {
-        cout << "Não foi encontrado artigos com este id\n";
+        cout << "Não foi encontrado artigos com este id\n\n";
     }
 }
 
@@ -54,11 +56,12 @@ void seek1(int32_t id)
     std::pair<int32_t, int32_t> searchResult = primaryIndex.search(Field::asInteger(id));
     if (searchResult.first != -1) {
         cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
+        cout << "Há " << primaryIndex.m_locatedBlocks + 1 << " blocos no arquivo de índice primário\n\n";
         Record rec = dataFile.getFromBlock(searchResult.first, Field::asInteger(id), article.getFields());
         article.fromRecord(rec);
-        cout << article;
+        cout << article << '\n';
     } else {
-        cout << "Não foi encontrado artigos com este id\n";
+        cout << "Não foi encontrado artigos com este id\n\n";
     }
 }
 
@@ -70,11 +73,12 @@ void seek2(string title)
     std::pair<int32_t, int32_t> searchResult = secondaryIndex.search(Field::asString(title.c_str(), 300));
     if (searchResult.first != -1) {
         cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
+        cout << "Há " << secondaryIndex.m_locatedBlocks + 1 << " blocos no arquivo de índice secundário\n\n";
         Record rec = dataFile.getFromBlock(searchResult.first, Field::asString(title.c_str(), 300), article.getFields(), 1);
         article.fromRecord(rec);
-        cout << article;
+        cout << article << '\n';
     } else {
-        cout << "Não foi encontrado artigos com este id\n";
+        cout << "Não foi encontrado artigos com este id\n\n";
     }
 }
 
