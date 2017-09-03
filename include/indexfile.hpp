@@ -18,7 +18,7 @@ class IndexFile{
     void insert(Field field, int32_t dataBlockIndex);
     void writeHeaderToDisk();
     void readHeaderFromDisk();
-    int32_t search(Field field);
+    std::pair<int32_t, int32_t> search(Field field);
     size_t m_order{0};
 
     int findLocation(Field field, DiskBlock block);

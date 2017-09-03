@@ -92,7 +92,7 @@ TEST_CASE("Teste massivo de Indexfile") {
     SECTION("Busca") {
         IndexFile indexFile = IndexFile::Open("index.bin");
         for (int i = 0; i < TESTS_NUMBER; i++) {
-            REQUIRE(indexFile.search(fields[i]) == i);
+            REQUIRE(indexFile.search(fields[i]).first == i);
         }
         remove("index.bin");
     }

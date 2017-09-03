@@ -204,21 +204,23 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
     }
 }
 
-int32_t IndexFile::search(Field field)
+std::pair<int32_t, int32_t> IndexFile::search(Field field)
 {
     std::vector<Field> blockFields{ field, Field::asInteger(), Field::asInteger() };
+    int32_t numberBlocksVisited = 0;
     int32_t blockOffset = m_root;
     DiskBlock block(blockFields);
     while (true) {
         if (blockOffset == -1) {
-            return -1;
+            return std::make_pair(-1, numberBlocksVisited);
         }
+        numberBlocksVisited++;
         fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
         block.readFromFile(m_file);
         size_t index = findLocation(field, block) + 1;
         if (index != block.m_records.size()) {
             if (block.m_records[index].m_data[0] == field) {
-                return block.m_records[index].m_data[1].m_integer;
+                return std::make_pair(block.m_records[index].m_data[1].m_integer, numberBlocksVisited);
             }
         }
         if (index == 0) {
