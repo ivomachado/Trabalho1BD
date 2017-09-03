@@ -1,4 +1,3 @@
-#include "program.hpp"
 #include "article.hpp"
 #include "field.hpp"
 #include "hashfile.hpp"
@@ -13,41 +12,40 @@
 
 using namespace std;
 
-void Program::upload()
+void upload()
 {
     string filename = "teste.csv";
-    // cout << "Digite o caminho do arquivo:\n";
-    // cin >> filename;
-    vector<Article> myArticles;
     FILE* file = fopen(filename.c_str(), "r");
-
+    HashFile dataFile = HashFile::Create("data.bin");
+    IndexFile primaryIndex = IndexFile::Create("primary.index");
+    IndexFile secondaryIndex = IndexFile::Create("secondary.index");
     while (!feof(file)) {
-        myArticles.emplace_back(file);
+        Record rec = Article(file).toRecord();
+
+        int32_t blockIndex = dataFile.insert(rec);
+        primaryIndex.insert(rec.m_data[0], blockIndex);
+        secondaryIndex.insert(rec.m_data[1], blockIndex);
     }
     fclose(file);
 }
 
+void findrec()
+{
+    HashFile dataFile = HashFile::Open("data.bin");
+    Article article;
+    int32_t id;
+    cout << "Digite o id a ser buscado: ";
+    cin >> id;
+    std::pair<Record, int32_t> searchResult = dataFile.search(Field::asInteger(id), article.getFields());
+    if(searchResult.first.m_data.size() > 0) {
+        cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
+        article.fromRecord(searchResult.first);
+        cout << article;
+    }
+}
+
 int main()
 {
-    const int TESTS_NUMBER = 23;
-    vector<Field> fields(TESTS_NUMBER);
-    for (int i = 0; i < TESTS_NUMBER; i++) {
-        stringstream s;
-        s << i;
-        fields[i] = Field::asString(s.str().c_str(), 177);
-        // fields[i] = Field::asInteger(i);
-    }
-    {
-        IndexFile indexFile = IndexFile::Create("index.bin");
-        for (int i = 0; i < TESTS_NUMBER; i++) {
-            indexFile.insert(fields[i], i);
-        }
-    }
-
-    {
-        IndexFile indexFile = IndexFile::Open("index.bin");
-        for (int i = 0; i < TESTS_NUMBER; i++) {
-            indexFile.search(fields[i]);
-        }
-    }
+    // upload();
+    findrec();
 }
