@@ -72,7 +72,7 @@ TEST_CASE("Escrita de registro no HashFile")
     remove("hash.bin");
 }
 
-TEST_CASE("Escrita de registro no Indexfile") {
+TEST_CASE("Teste massivo de Indexfile") {
     const int TESTS_NUMBER = 1500;
     vector<Field> fields(TESTS_NUMBER);
     for (int i = 0; i < TESTS_NUMBER; i++) {
@@ -81,17 +81,49 @@ TEST_CASE("Escrita de registro no Indexfile") {
         // fields[i] = Field::asString(s.str().c_str(), 128);
         fields[i] = Field::asInteger(i);
     }
-    SECTION("Inserção em massa") {
+
+    SECTION("Inserção") {
         IndexFile indexFile = IndexFile::Create("index.bin");
         for (int i = 0; i < TESTS_NUMBER; i++) {
             indexFile.insert(fields[i], i);
         }
     }
 
-    SECTION("Busca em massa") {
+    SECTION("Busca") {
         IndexFile indexFile = IndexFile::Open("index.bin");
         for (int i = 0; i < TESTS_NUMBER; i++) {
             REQUIRE(indexFile.search(fields[i]) == i);
+        }
+        remove("index.bin");
+    }
+}
+
+TEST_CASE("Teste massivo de HashFile")
+{
+    const int TESTS_NUMBER = 1000;
+    vector<Record> records;
+    for (int i = 0; i < TESTS_NUMBER; i++) {
+        stringstream s;
+        s << i;
+        records.emplace_back(std::vector<Field>{ Field::asInteger(i), Field::asString(s.str().c_str(), 2048) });
+        // fields[i] = Field::asInteger(i);
+    }
+
+    SECTION("Inserção")
+    {
+        HashFile hashFile = HashFile::Create("index.bin");
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            hashFile.insert(records[i]);
+        }
+    }
+
+    SECTION("Busca")
+    {
+        HashFile hashFile = HashFile::Open("index.bin");
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            std::pair<Record, int32_t> searchResult = hashFile.search(records[i].m_data[0], records[i].m_data);
+            REQUIRE(searchResult.first.m_data[0] == records[i].m_data[0]);
+            REQUIRE(searchResult.first.m_data[1] == records[i].m_data[1]);
         }
     }
 }
