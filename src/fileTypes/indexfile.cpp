@@ -109,7 +109,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
         std::vector<Field> recordFields{ field, Field::asInteger(dataBlockIndex), Field::asInteger(-1) };
         Record record(recordFields);
 
-        block.insert(record);
+        block.m_records.push_back(record);
         std::sort(block.m_records.begin(), block.m_records.end(), [](const Record& a, const Record& b) -> bool {
             return a.m_data[0] <= b.m_data[0];
         });
@@ -141,7 +141,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
         Record resultadoInsercao = insertNonFull(childBlock, childOffset, field, dataBlockIndex);
 
         if (resultadoInsercao.m_data.size() != 0) {
-            block.insert(resultadoInsercao);
+            block.m_records.push_back(resultadoInsercao);
             std::sort(block.m_records.begin(), block.m_records.end(), [](const Record& a, const Record& b) -> bool {
                 return a.m_data[0] <= b.m_data[0];
             });
@@ -194,7 +194,7 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
         if(rec.m_data.size()  > 0) {
             DiskBlock newRoot(rootBlock.m_recordFields);
             newRoot.m_header.m_data[1].m_integer = m_root;
-            newRoot.insert(rec);
+            newRoot.m_records.push_back(rec);
             m_root = m_locatedBlocks;
             m_locatedBlocks++;
             fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
