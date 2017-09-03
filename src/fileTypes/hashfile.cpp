@@ -70,7 +70,7 @@ int32_t HashFile::insert(Record rec)
     int32_t blockIndex = rec.m_data[m_fieldHashIndex].hash(HashFile::NUMBER_BLOCKS);
     fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
     DiskBlock choosenBlock(rec.m_data);
-    if(m_blocksMap.get(blockIndex)) {
+    if (m_blocksMap.get(blockIndex)) {
         choosenBlock.readFromFile(m_file);
     } else {
         m_blocksMap.set(blockIndex, true);
@@ -97,7 +97,6 @@ int32_t HashFile::insert(Record rec)
     return blockIndex;
 }
 
-
 std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> recordFields)
 {
     int32_t numberBlocksVisited = 0;
@@ -108,8 +107,8 @@ std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> reco
             numberBlocksVisited++;
             fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
             choosenBlock.readFromFile(m_file);
-            for(auto& rec : choosenBlock.m_records) {
-                if(rec.m_data[m_fieldHashIndex] == field) {
+            for (auto& rec : choosenBlock.m_records) {
+                if (rec.m_data[m_fieldHashIndex] == field) {
                     return std::make_pair(rec, numberBlocksVisited);
                 }
             }
@@ -117,4 +116,22 @@ std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> reco
         } while (blockIndex != 0);
     }
     return std::make_pair(Record(), -1);
+}
+
+Record HashFile::getFromBlock(int32_t blockIndex, Field field, std::vector<Field> recordFields)
+{
+    return getFromBlock(blockIndex, field, recordFields, m_fieldHashIndex);
+}
+
+Record HashFile::getFromBlock(int32_t blockIndex, Field field, std::vector<Field> recordFields, int fieldIndex)
+{
+    DiskBlock choosenBlock(recordFields);
+    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+    choosenBlock.readFromFile(m_file);
+    for (auto& rec : choosenBlock.m_records) {
+        if (rec.m_data[fieldIndex] == field) {
+            return rec;
+        }
+    }
+    return Record();
 }
