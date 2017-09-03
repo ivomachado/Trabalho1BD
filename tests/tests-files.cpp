@@ -78,8 +78,8 @@ TEST_CASE("Escrita de registro no Indexfile") {
     for (int i = 0; i < TESTS_NUMBER; i++) {
         stringstream s;
         s << i;
-        fields[i] = Field::asString(s.str().c_str(), 128);
-        // fields[i] = Field::asInteger(i);
+        // fields[i] = Field::asString(s.str().c_str(), 128);
+        fields[i] = Field::asInteger(i);
     }
     {
         IndexFile indexFile = IndexFile::Create("index.bin");
