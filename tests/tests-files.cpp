@@ -59,7 +59,7 @@ TEST_CASE("Escrita de registro no HashFile")
     SECTION("Sem Colisão") {
         eaIndex = a.m_data[0].m_integer = 2;
         ebIndex = b.m_data[0].m_integer = 3;
-        ecIndex = c.m_data[0].m_integer = 4;
+        ecIndex = c.m_data[0].m_integer = 15340;
         aIndex = hashfile.insert(a);
         bIndex = hashfile.insert(b);
         cIndex = hashfile.insert(c);
@@ -73,7 +73,7 @@ TEST_CASE("Escrita de registro no HashFile")
 }
 
 TEST_CASE("Escrita de registro no Indexfile") {
-    const int TESTS_NUMBER = 200000;
+    const int TESTS_NUMBER = 1500;
     vector<Field> fields(TESTS_NUMBER);
     for (int i = 0; i < TESTS_NUMBER; i++) {
         stringstream s;

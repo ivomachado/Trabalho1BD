@@ -30,34 +30,52 @@ HashFile HashFile::Open(std::string filename)
 void HashFile::readHeaderFromDisk()
 {
     std::vector<Field> firstBlockFields{ Field::asInteger(), Field::asByteArray(DiskBlock::AVAILABLE_SIZE - 4) };
-    DiskBlock firstBlock(firstBlockFields);
-    firstBlock.readFromFile(m_file);
-    m_overflowBlocks = firstBlock.m_records[0].m_data[0].m_integer;
-    m_blocksMap = Utils::BitMap(firstBlock.m_records);
+    std::vector<Field> otherBlockFields{ Field::asByteArray(DiskBlock::AVAILABLE_SIZE) };
+    std::vector<DiskBlock> headerBlocks;
+
+    headerBlocks.emplace_back(firstBlockFields);
+
+    headerBlocks[0].readFromFile(m_file);
+    m_overflowBlocks = headerBlocks[0].m_records[0].m_data[0].m_integer;
+    for (int i = 1; i < HashFile::NUMBER_BLOCKS_HEADER; i++) {
+        headerBlocks.emplace_back(otherBlockFields);
+        headerBlocks[i].readFromFile(m_file);
+    }
+    m_blocksMap = Utils::BitMap(headerBlocks);
 }
 
 void HashFile::writeHeaderToDisk()
 {
     std::vector<Field> firstBlockFields{ Field::asInteger(m_overflowBlocks), Field::asByteArray(DiskBlock::AVAILABLE_SIZE - 4) };
-    DiskBlock firstBlock(firstBlockFields);
-    Record firstHeader(firstBlockFields);
-    firstBlock.insert(firstHeader);
-    m_blocksMap.write(firstBlock.m_records);
+    std::vector<Field> otherBlockFields{ Field::asByteArray(DiskBlock::AVAILABLE_SIZE) };
+    std::vector<DiskBlock> headerBlocks;
+
+    headerBlocks.emplace_back(firstBlockFields);
+    headerBlocks.back().m_records.emplace_back(firstBlockFields);
     fseek(m_file, 0, SEEK_SET);
-    firstBlock.writeToFile(m_file);
+
+    for (int i = 1; i < HashFile::NUMBER_BLOCKS_HEADER; i++) {
+        headerBlocks.emplace_back(otherBlockFields);
+        headerBlocks.back().m_records.emplace_back(otherBlockFields);
+    }
+
+    m_blocksMap.write(headerBlocks);
+    for (int i = 0; i < HashFile::NUMBER_BLOCKS_HEADER; i++) {
+        headerBlocks[i].writeToFile(m_file);
+    }
 }
 
 int32_t HashFile::insert(Record rec)
 {
     int32_t blockIndex = rec.m_data[m_fieldHashIndex].hash(HashFile::NUMBER_BLOCKS);
-    fseek(m_file, Utils::calcBlockOffset(blockIndex), SEEK_SET);
+    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
     DiskBlock choosenBlock(rec.m_data);
     if(m_blocksMap.get(blockIndex)) {
         choosenBlock.readFromFile(m_file);
     } else {
         m_blocksMap.set(blockIndex, true);
         writeHeaderToDisk();
-        fseek(m_file, Utils::calcBlockOffset(blockIndex), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
     }
     while (!choosenBlock.insert(rec)) {
         blockIndex = choosenBlock.m_header.m_data[1].m_integer;
@@ -66,12 +84,12 @@ int32_t HashFile::insert(Record rec)
             fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
             choosenBlock.writeToFile(m_file);
             writeHeaderToDisk();
-            fseek(m_file, Utils::calcBlockOffset(blockIndex), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
             choosenBlock.m_header.m_data[0].m_integer = 0;
             choosenBlock.m_header.m_data[1].m_integer = 0;
             choosenBlock.m_records.resize(0);
         } else {
-            fseek(m_file, Utils::calcBlockOffset(blockIndex), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
             choosenBlock.readFromFile(m_file);
         }
     }
