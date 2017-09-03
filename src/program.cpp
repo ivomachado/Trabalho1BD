@@ -1,3 +1,4 @@
+#include "program.hpp"
 #include "article.hpp"
 #include "field.hpp"
 #include "hashfile.hpp"
@@ -7,17 +8,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <vector>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
-/**
- * \author Ivo Machado
- * 
- * Abre o arquivo passado e gera um arquivo de dados, e dois de índice para este de dados
- */
-void upload(string filename = "teste.csv")
+void Program::upload(string filename)
 {
     FILE* file = fopen(filename.c_str(), "r");
     HashFile dataFile = HashFile::Create("data.bin");
@@ -37,17 +33,12 @@ void upload(string filename = "teste.csv")
     fclose(file);
 }
 
-/**
- * \author Ivo Machado
- * 
- * Procura o id no arquivo de dados usando hashing
- */
-void findrec(int32_t id)
+void Program::findrec(int32_t id)
 {
     HashFile dataFile = HashFile::Open("data.bin");
     Article article;
     std::pair<Record, int32_t> searchResult = dataFile.search(Field::asInteger(id), article.getFields());
-    if(searchResult.first.m_data.size() > 0) {
+    if (searchResult.first.m_data.size() > 0) {
         cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
         fseek(dataFile.m_file, 0, SEEK_END);
         cout << "Há " << ftell(dataFile.m_file) / DiskBlock::SIZE << " blocos no arquivo de índice primário\n\n";
@@ -58,12 +49,7 @@ void findrec(int32_t id)
     }
 }
 
-/**
- * \author Ivo Machado
- * 
- * Procura o id no arquivo de índice primário
- */
-void seek1(int32_t id)
+void Program::seek1(int32_t id)
 {
     HashFile dataFile = HashFile::Open("data.bin");
     IndexFile primaryIndex = IndexFile::Open("primary.index");
@@ -80,12 +66,7 @@ void seek1(int32_t id)
     }
 }
 
-/**
- * \author Ivo Machado
- * 
- * Procura o título no arquivo de índice secundário
- */
-void seek2(string title)
+void Program::seek2(string title)
 {
     HashFile dataFile = HashFile::Open("data.bin");
     IndexFile secondaryIndex = IndexFile::Open("secondary.index");
@@ -102,7 +83,8 @@ void seek2(string title)
     }
 }
 
-void help() {
+void Program::help()
+{
     cout << "As seguintes operações estão disponíveis:\n\n";
     cout << "upload <filename>   \t Cria um arquivo de dados e arquivos de índice primário e secundário\n";
     cout << "findrec <id>        \t Busca diretamente no arquivo de dados pelo id informado\n";
@@ -114,36 +96,35 @@ void help() {
 
 int main()
 {
-    help();
+    Program::help();
 
     string command;
-    while(true) {
+    while (true) {
         cout << "> ";
         cin >> command;
-        if(command == "upload") {
+        if (command == "upload") {
             string filename;
             cin >> filename;
-            upload(filename);
+            Program::upload(filename);
             cout << "Upload completo!!\n";
-        } else if(command == "findrec") {
+        } else if (command == "findrec") {
             int32_t id;
             cin >> id;
-            findrec(id);
+            Program::findrec(id);
             cout << '\n';
         } else if (command == "seek1") {
             int32_t id;
             cin >> id;
-            seek1(id);
+            Program::seek1(id);
             cout << '\n';
         } else if (command == "seek2") {
             char title[301];
             cin.getline(title, 301);
-            seek2(string(title + 1));
+            Program::seek2(string(title + 1));
             cout << '\n';
         } else if (command == "help") {
-            help();
-        }
-         else if (command == "exit") {
+            Program::help();
+        } else if (command == "exit") {
             return 0;
         }
     }
