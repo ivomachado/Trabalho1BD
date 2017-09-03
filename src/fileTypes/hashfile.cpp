@@ -73,16 +73,15 @@ int32_t HashFile::insert(Record rec)
     DiskBlock choosenBlock(rec.m_data);
     if (m_blocksMap.get(blockIndex)) {
         choosenBlock.readFromFile(m_file);
+        fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
     } else {
         m_blocksMap.set(blockIndex, true);
         // writeHeaderToDisk();
-        fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
     }
     while (!choosenBlock.insert(rec)) {
         blockIndex = choosenBlock.m_header.m_data[1].m_integer;
         if (blockIndex == 0) {
             blockIndex = choosenBlock.m_header.m_data[1].m_integer = HashFile::NUMBER_BLOCKS + m_overflowBlocks++;
-            fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
             choosenBlock.writeToFile(m_file);
             // writeHeaderToDisk();
             fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
@@ -92,6 +91,7 @@ int32_t HashFile::insert(Record rec)
         } else {
             fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
             choosenBlock.readFromFile(m_file);
+            fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
         }
     }
     choosenBlock.writeToFile(m_file);
