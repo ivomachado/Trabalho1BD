@@ -22,5 +22,6 @@ public:
     void writeHeaderToDisk();
     void readHeaderFromDisk();
     int32_t m_overflowBlocks{ 0 };
+    std::pair<Record, int32_t> search(Field field, std::vector<Field> recordFields);
 };
 #endif // !HASHFILE_HPP

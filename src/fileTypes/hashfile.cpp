@@ -96,3 +96,25 @@ int32_t HashFile::insert(Record rec)
     choosenBlock.writeToFile(m_file);
     return blockIndex;
 }
+
+
+std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> recordFields)
+{
+    int32_t numberBlocksVisited;
+    int32_t blockIndex = field.hash(HashFile::NUMBER_BLOCKS);
+    DiskBlock choosenBlock(recordFields);
+    if (m_blocksMap.get(blockIndex)) {
+        do {
+            numberBlocksVisited++;
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+            choosenBlock.readFromFile(m_file);
+            for(auto& rec : choosenBlock.m_records) {
+                if(rec.m_data[m_fieldHashIndex] == field) {
+                    return std::make_pair(rec, numberBlocksVisited);
+                }
+            }
+            blockIndex = choosenBlock.m_header.m_data[1].m_integer;
+        } while (blockIndex != -1);
+    }
+    return std::make_pair(Record(), -1);
+}
