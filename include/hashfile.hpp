@@ -15,7 +15,8 @@ public:
     HashFile(std::string filename, std::string mode);
     static HashFile Create(std::string filename);
     static HashFile Open(std::string filename);
-    static const int32_t NUMBER_BLOCKS{ (DiskBlock::AVAILABLE_SIZE - 4) * 8 };
+    static const int NUMBER_BLOCKS_HEADER = 46;
+    static const int32_t NUMBER_BLOCKS{ (DiskBlock::AVAILABLE_SIZE * NUMBER_BLOCKS_HEADER - 4) * 8 };
     int m_fieldHashIndex{ 0 };
     Utils::BitMap m_blocksMap;
     void writeHeaderToDisk();
