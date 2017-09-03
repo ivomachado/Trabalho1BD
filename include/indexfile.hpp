@@ -19,7 +19,7 @@ class IndexFile{
     void writeHeaderToDisk();
     void readHeaderFromDisk();
     std::pair<int32_t, int32_t> search(Field field);
-    size_t m_order{0};
+    size_t m_fanOut{0};
 
     int findLocation(Field field, DiskBlock block);
     bool isLeaf(DiskBlock block);

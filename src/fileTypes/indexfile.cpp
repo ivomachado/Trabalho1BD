@@ -115,7 +115,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
             return a.m_data[0] < b.m_data[0];
         });
         Record rec;
-        if (block.m_records.size() > m_order) {
+        if (block.m_records.size() > m_fanOut) {
             rec = split(block);
         }
         fseek(m_file, Utils::calcBlockOffset(blockOffset) - ftell(m_file), SEEK_CUR);
@@ -147,7 +147,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
                 return a.m_data[0] < b.m_data[0];
             });
             Record resultadoSplit;
-            if (block.m_records.size() > m_order) {
+            if (block.m_records.size() > m_fanOut) {
                 resultadoSplit = split(block);
             }
             fseek(m_file, Utils::calcBlockOffset(blockOffset) - ftell(m_file), SEEK_CUR);
@@ -164,13 +164,13 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
     std::vector<Field> blockFields{ field, Field::asInteger(), Field::asInteger() };
     std::vector<Field> recordFields{ field, Field::asInteger(dataBlockIndex), Field::asInteger(-1) };
     Record record(recordFields);
-    if (m_order == 0) {
+    if (m_fanOut == 0) {
         int recordSize = 0;
         for (auto& field : recordFields) {
             recordSize += field.size();
         }
-        m_order = DiskBlock::AVAILABLE_SIZE / recordSize;
-        m_order = m_order % 2 == 1 ? m_order - 1 : m_order;
+        m_fanOut = DiskBlock::AVAILABLE_SIZE / recordSize;
+        m_fanOut = m_fanOut % 2 == 1 ? m_fanOut - 1 : m_fanOut;
     }
 
     if (m_locatedBlocks == 0) {
