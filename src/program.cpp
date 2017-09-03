@@ -18,11 +18,16 @@ void upload(string filename = "teste.csv")
     HashFile dataFile = HashFile::Create("data.bin");
     IndexFile primaryIndex = IndexFile::Create("primary.index");
     IndexFile secondaryIndex = IndexFile::Create("secondary.index");
+    int totalInserted = 0;
     while (!feof(file)) {
         Record rec = Article(file).toRecord();
         int32_t blockIndex = dataFile.insert(rec);
         primaryIndex.insert(rec.m_data[0], blockIndex);
         secondaryIndex.insert(rec.m_data[1], blockIndex);
+        totalInserted++;
+        if(totalInserted%1000) {
+            cout << totalInserted << " registros inseridos\n";
+        }
     }
     fclose(file);
 }
@@ -49,19 +54,43 @@ void seek1(int32_t id)
     std::pair<int32_t, int32_t> searchResult = primaryIndex.search(Field::asInteger(id));
     if (searchResult.first != -1) {
         cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
-        // article.fromRecord(searchResult.first);
-        // cout << article;
+        Record rec = dataFile.getFromBlock(searchResult.first, Field::asInteger(id), article.getFields());
+        article.fromRecord(rec);
+        cout << article;
+    } else {
+        cout << "Não foi encontrado artigos com este id\n";
     }
 }
 
-int main()
+void seek2(string title)
 {
+    HashFile dataFile = HashFile::Open("data.bin");
+    IndexFile secondaryIndex = IndexFile::Open("secondary.index");
+    Article article;
+    std::pair<int32_t, int32_t> searchResult = secondaryIndex.search(Field::asString(title.c_str(), 300));
+    if (searchResult.first != -1) {
+        cout << "Foi necessário acessar " << searchResult.second << " blocos para encontrar o registro" << '\n';
+        Record rec = dataFile.getFromBlock(searchResult.first, Field::asString(title.c_str(), 300), article.getFields(), 1);
+        article.fromRecord(rec);
+        cout << article;
+    } else {
+        cout << "Não foi encontrado artigos com este id\n";
+    }
+}
+
+void help() {
     cout << "As seguintes operações estão disponíveis:\n\n";
     cout << "upload <filename>   \t Cria um arquivo de dados e arquivos de índice primário e secundário\n";
     cout << "findrec <id>        \t Busca diretamente no arquivo de dados pelo id informado\n";
     cout << "seek1 <id>          \t Busca no índice primário pelo id informado\n";
     cout << "seek2 <title>       \t Busca no índice primário pelo titulo informado informado\n";
+    cout << "help                \t Imprime esta mensagem de ajuda\n";
     cout << "exit                \t sai do programa\n\n\n";
+}
+
+int main()
+{
+    help();
 
     string command;
     while(true) {
@@ -71,15 +100,27 @@ int main()
             string filename;
             cin >> filename;
             upload(filename);
+            cout << "Upload completo!!\n";
         } else if(command == "findrec") {
             int32_t id;
             cin >> id;
             findrec(id);
+            cout << '\n';
+        } else if (command == "seek1") {
+            int32_t id;
+            cin >> id;
+            seek1(id);
+            cout << '\n';
+        } else if (command == "seek2") {
+            char title[301];
+            cin.getline(title, 301);
+            seek2(string(title + 1));
+            cout << '\n';
+        } else if (command == "help") {
+            help();
+        }
+         else if (command == "exit") {
+            return 0;
         }
     }
 }
-
-// int main() {
-//     upload();
-//     findrec(738289);
-// }
