@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -28,35 +29,25 @@ void Program::upload()
 
 int main()
 {
-    Field field1 = Field::asString("1", 1024);
-    Field field2 = Field::asString("2", 1024);
-    Field field3 = Field::asString("3", 1024);
-    Field field4 = Field::asString("4", 1024);
-    Field field5 = Field::asString("5", 1024);
-    Field field6 = Field::asString("6", 1024);
-    Field field7 = Field::asString("7", 1024);
-    Field field8 = Field::asString("8", 1024);
+    const int TESTS_NUMBER = 23;
+    vector<Field> fields(TESTS_NUMBER);
+    for (int i = 0; i < TESTS_NUMBER; i++) {
+        stringstream s;
+        s << i;
+        fields[i] = Field::asString(s.str().c_str(), 177);
+        // fields[i] = Field::asInteger(i);
+    }
     {
         IndexFile indexFile = IndexFile::Create("index.bin");
-        indexFile.insert(field1, 1);
-        indexFile.insert(field2, 2);
-        indexFile.insert(field3, 3);
-        indexFile.insert(field4, 4);
-        indexFile.insert(field5, 5);
-        indexFile.insert(field6, 6);
-        indexFile.insert(field7, 7);
-        indexFile.insert(field8, 8);
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            indexFile.insert(fields[i], i);
+        }
     }
 
     {
         IndexFile indexFile = IndexFile::Open("index.bin");
-        indexFile.search(field1);
-        indexFile.search(field2);
-        indexFile.search(field3);
-        indexFile.search(field4);
-        indexFile.search(field5);
-        indexFile.search(field6);
-        indexFile.search(field7);
-        indexFile.search(field8);
+        for (int i = 0; i < TESTS_NUMBER; i++) {
+            indexFile.search(fields[i]);
+        }
     }
 }
