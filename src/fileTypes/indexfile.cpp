@@ -111,7 +111,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
 
         block.m_records.push_back(record);
         std::sort(block.m_records.begin(), block.m_records.end(), [](const Record& a, const Record& b) -> bool {
-            return a.m_data[0] <= b.m_data[0];
+            return a.m_data[0] < b.m_data[0];
         });
         Record rec;
         if (block.m_records.size() > m_order) {
@@ -143,7 +143,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
         if (resultadoInsercao.m_data.size() != 0) {
             block.m_records.push_back(resultadoInsercao);
             std::sort(block.m_records.begin(), block.m_records.end(), [](const Record& a, const Record& b) -> bool {
-                return a.m_data[0] <= b.m_data[0];
+                return a.m_data[0] < b.m_data[0];
             });
             Record resultadoSplit;
             if (block.m_records.size() > m_order) {
