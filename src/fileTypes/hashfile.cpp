@@ -69,14 +69,14 @@ void HashFile::writeHeaderToDisk()
 int32_t HashFile::insert(Record rec)
 {
     int32_t blockIndex = rec.m_data[m_fieldHashIndex].hash(HashFile::NUMBER_BLOCKS);
-    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
     DiskBlock choosenBlock(rec.m_data);
     if (m_blocksMap.get(blockIndex)) {
         choosenBlock.readFromFile(m_file);
     } else {
         m_blocksMap.set(blockIndex, true);
         // writeHeaderToDisk();
-        fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
     }
     while (!choosenBlock.insert(rec)) {
         blockIndex = choosenBlock.m_header.m_data[1].m_integer;
@@ -85,12 +85,12 @@ int32_t HashFile::insert(Record rec)
             fseek(m_file, -DiskBlock::SIZE, SEEK_CUR);
             choosenBlock.writeToFile(m_file);
             // writeHeaderToDisk();
-            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
             choosenBlock.m_header.m_data[0].m_integer = 0;
             choosenBlock.m_header.m_data[1].m_integer = 0;
             choosenBlock.m_records.resize(0);
         } else {
-            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
             choosenBlock.readFromFile(m_file);
         }
     }
@@ -106,7 +106,7 @@ std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> reco
     if (m_blocksMap.get(blockIndex)) {
         do {
             numberBlocksVisited++;
-            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
             choosenBlock.readFromFile(m_file);
             for (auto& rec : choosenBlock.m_records) {
                 if (rec.m_data[m_fieldHashIndex] == field) {
@@ -127,7 +127,7 @@ Record HashFile::getFromBlock(int32_t blockIndex, Field field, std::vector<Field
 Record HashFile::getFromBlock(int32_t blockIndex, Field field, std::vector<Field> recordFields, int fieldIndex)
 {
     DiskBlock choosenBlock(recordFields);
-    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER), SEEK_SET);
+    fseek(m_file, Utils::calcBlockOffset(blockIndex, HashFile::NUMBER_BLOCKS_HEADER) - ftell(m_file), SEEK_CUR);
     choosenBlock.readFromFile(m_file);
     for (auto& rec : choosenBlock.m_records) {
         if (rec.m_data[fieldIndex] == field) {

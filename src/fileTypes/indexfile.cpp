@@ -97,7 +97,7 @@ Record IndexFile::split(DiskBlock& block)
     newBlock.m_header.m_data[1].m_integer = middleKeyRecord.m_data[2].m_integer;
     middleKeyRecord.m_data[2].m_integer = m_locatedBlocks;
     // writeHeaderToDisk();
-    fseek(m_file, Utils::calcBlockOffset(m_locatedBlocks), SEEK_SET);
+    fseek(m_file, Utils::calcBlockOffset(m_locatedBlocks) - ftell(m_file), SEEK_CUR);
     newBlock.writeToFile(m_file);
     m_locatedBlocks++;
     return middleKeyRecord;
@@ -118,7 +118,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
         if (block.m_records.size() > m_order) {
             rec = split(block);
         }
-        fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(blockOffset) - ftell(m_file), SEEK_CUR);
         block.writeToFile(m_file);
         return rec;
     } else {
@@ -134,7 +134,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
         } else {
             childOffset = block.m_records[index].m_data[2].m_integer;
         }
-        fseek(m_file, Utils::calcBlockOffset(childOffset), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(childOffset) - ftell(m_file), SEEK_CUR);
 
         DiskBlock childBlock(block.m_recordFields);
         childBlock.readFromFile(m_file);
@@ -150,7 +150,7 @@ Record IndexFile::insertNonFull(DiskBlock& block, int32_t blockOffset, Field fie
             if (block.m_records.size() > m_order) {
                 resultadoSplit = split(block);
             }
-            fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(blockOffset) - ftell(m_file), SEEK_CUR);
             block.writeToFile(m_file);
             return resultadoSplit;
         }
@@ -183,12 +183,12 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
         m_locatedBlocks++;
 
         // writeHeaderToDisk();
-        fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(m_root) - ftell(m_file), SEEK_CUR);
         rootBlock.writeToFile(m_file);
     } else {
         //read root from disk
         DiskBlock rootBlock(blockFields);
-        fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(m_root) - ftell(m_file), SEEK_CUR);
         rootBlock.readFromFile(m_file);
 
         Record rec = insertNonFull(rootBlock, m_root, field, dataBlockIndex);
@@ -198,7 +198,7 @@ void IndexFile::insert(Field field, int32_t dataBlockIndex)
             newRoot.m_records.push_back(rec);
             m_root = m_locatedBlocks;
             m_locatedBlocks++;
-            fseek(m_file, Utils::calcBlockOffset(m_root), SEEK_SET);
+            fseek(m_file, Utils::calcBlockOffset(m_root) - ftell(m_file), SEEK_CUR);
             newRoot.writeToFile(m_file);
             // writeHeaderToDisk();
         }
@@ -216,7 +216,7 @@ std::pair<int32_t, int32_t> IndexFile::search(Field field)
             return std::make_pair(-1, numberBlocksVisited);
         }
         numberBlocksVisited++;
-        fseek(m_file, Utils::calcBlockOffset(blockOffset), SEEK_SET);
+        fseek(m_file, Utils::calcBlockOffset(blockOffset) - ftell(m_file), SEEK_CUR);
         block.readFromFile(m_file);
         size_t index = findLocation(field, block) + 1;
         if (index != block.m_records.size()) {
