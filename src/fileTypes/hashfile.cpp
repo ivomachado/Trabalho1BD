@@ -100,7 +100,7 @@ int32_t HashFile::insert(Record rec)
 
 std::pair<Record, int32_t> HashFile::search(Field field, std::vector<Field> recordFields)
 {
-    int32_t numberBlocksVisited;
+    int32_t numberBlocksVisited = 0;
     int32_t blockIndex = field.hash(HashFile::NUMBER_BLOCKS);
     DiskBlock choosenBlock(recordFields);
     if (m_blocksMap.get(blockIndex)) {
