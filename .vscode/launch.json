@@ -11,10 +11,13 @@
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceRoot}/bin/program.exe",
                 "miDebuggerPath": "/mingw64/bin/gdb.exe"
+            },
+            "linux": {
+                "program": "${workspaceRoot}/bin/program",
+                "miDebuggerPath": "/usr/bin/gdb"
             },
             "setupCommands": [
                 {
