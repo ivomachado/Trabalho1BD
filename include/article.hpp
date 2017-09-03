@@ -1,6 +1,7 @@
 #ifndef ARTICLE_HPP
 #define ARTICLE_HPP
 
+#include "record.hpp"
 #include <string>
 
 /** 
@@ -25,6 +26,10 @@ public:
      * Construtor padrão
      */
     Article();
+
+    Record toRecord();
+
+    std::vector<Field> getFields();
 };
 
 #endif
