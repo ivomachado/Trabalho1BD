@@ -21,6 +21,10 @@ void readString(FILE* file, char* buffer, char* destination, int maxSize, bool a
     }
     for (int i = 1; i < 2000 && !feof(file); i++) {
         buffer[i] = fgetc(file);
+        if(buffer[i] == '\r') {
+            i--;
+            continue;
+        }
         if(i == 4) {
             if (buffer[0] == 'N' && buffer[1] == 'U' && buffer[2] == 'L' && buffer[3] == 'L') {
                 destination[0] = '\0';
