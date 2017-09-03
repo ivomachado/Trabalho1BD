@@ -33,9 +33,14 @@
 /bin
 /binWsl
 
-# Doccumentação
+# Documentação
 
 /doc
 
 # Dados
-*.csv
+*.csv*
+
+# Artefatos gerados
+*.bin
+*.index
+input
