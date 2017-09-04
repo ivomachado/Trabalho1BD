@@ -20,6 +20,8 @@ void removeQuotes(char* buffer)
 
 /**
  * Lê um campo string do arquivo de entrada e salva em destination
+ * 
+ * @author Juliana Castro
  */
 void readString(FILE* file, char* buffer, char* destination, int maxSize, bool acceptNewLines = true)
 {
