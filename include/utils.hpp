@@ -8,16 +8,16 @@
 #include <vector>
 
 /**
- * \author Ivo Machado
- * 
  * Contém coisas não diretamente ligadas ao problema mas que são úteis
+ * 
+ * \author Ivo Machado
  */
 namespace Utils {
 
 /**
- * \author Ivo Machado
- * 
  * Escreve o vector m_data no buffer
+ * 
+ * \author Ivo Machado
  */
 template <typename T>
 short writeVectorToBuffer(char* buffer, std::vector<T>& m_data, short begin)
@@ -29,9 +29,9 @@ short writeVectorToBuffer(char* buffer, std::vector<T>& m_data, short begin)
 }
 
 /**
- * \author Ivo Machado
- * 
  * Lê o vector m_data do buffer
+ * 
+ * \author Ivo Machado
  */
 template <typename T>
 short readVectorFromBuffer(char* buffer, std::vector<T>& m_data, short begin)
@@ -43,9 +43,9 @@ short readVectorFromBuffer(char* buffer, std::vector<T>& m_data, short begin)
 }
 
 /**
- * \author Ivo Machado
- * 
  * Converte o value para 4 char e os escreve em buffer
+ * 
+ * \author Ivo Machado
  */
 inline void intToCharArray(int32_t value, char* buffer)
 {
@@ -56,9 +56,9 @@ inline void intToCharArray(int32_t value, char* buffer)
 }
 
 /**
- * \author Ivo Machado
- * 
  * converte 4 char para inteiro
+ * 
+ * \author Ivo Machado
  */
 inline int32_t charArrayToInt(char* buffer)
 {
@@ -67,22 +67,29 @@ inline int32_t charArrayToInt(char* buffer)
 }
 
 /**
- * \author Ivo Machado
- * 
  * Abstrai um mapa de bits para facilitar as operações de ligar e desligar bits
+ * 
+ * \author Ivo Machado
  */
 class BitMap {
 public:
+    /** Guarda os bytes na memória */
     std::string m_data{ "" };
+
+    /**
+     * Construtor padrão com capacidade 0
+     * 
+     * \author Ivo Machado
+     */
     BitMap()
         : BitMap(0)
     {
     }
 
     /**
-     * \author Ivo Machado
-     * 
      * Cria um bitmap com os dados dos ByteArray dos blocos passados por parâmetro
+     * 
+     * \author Ivo Machado
      */
     BitMap(const std::vector<DiskBlock>& data)
     {
@@ -100,9 +107,9 @@ public:
     }
 
     /**
-     * \author Ivo Machado
-     * 
      * Cria um bitmap com capacidade no primeiro múltiplo de 8 maior ou igual ao tamanho pedido
+     * 
+     * \author Ivo Machado
      */
     BitMap(int32_t size)
     {
@@ -116,9 +123,9 @@ public:
     }
 
     /**
-     * \author Ivo Machado
-     * 
      * Retorna o booleano da posição informada
+     * 
+     * \author Ivo Machado
      */
     bool get(int32_t pos)
     {
@@ -129,9 +136,9 @@ public:
     }
 
     /**
-     * \author Ivo Machado
-     * 
      * Atribui o valor passado à posição pedida
+     * 
+     * \author Ivo Machado
      */
     void set(int32_t pos, bool value)
     {
@@ -142,9 +149,9 @@ public:
     }
 
     /**
-     * \author Ivo Machado
-     * 
      * Escreve o bitmap divido nos atributos ByteArray de vários blocos
+     * 
+     * \author Ivo Machado
      */
     void write(std::vector<DiskBlock>& data)
     {
@@ -165,9 +172,9 @@ public:
 };
 
 /**
- * \author Ivo Machado
- * 
  * Calcula o offset em bytes do bloco pedido considerando o overhead de cabeçalho do arquivo
+ * 
+ * \author Ivo Machado
  */
 inline int64_t calcBlockOffset(int32_t blockIndex, int32_t headerOverhead = 1)
 {

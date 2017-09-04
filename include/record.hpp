@@ -5,37 +5,39 @@
 #include <vector>
 
 /**
- * \author Ivo Machado
- * 
  * Classe de abstração de um registro e seus campos, escreve e lê suas informações 
  * em buffer de bytes
+ * 
+ * \author Ivo Machado
  */
 class Record {
     
 public:
+
+    /** Vetor de Field do registro */
     std::vector<Field> m_data;
     /**
-     * \author Ivo Machado
-     * 
      * Escreve os dados do Record no buffer
+     * 
+     * \author Ivo Machado
      */
     short writeToBuffer(char* buffer, short begin);
     /**
-     * \author Ivo Machado
-     * 
      * Lê os dados do buffer para o Record
+     * 
+     * \author Ivo Machado
      */
     short readFromBuffer(char* buffer, short begin);
     /**
-     * \author Ivo Machado
-     * 
      * Cria um novo Recor com os dados do vector de fields recebido por parâmetro
+     * 
+     * \author Ivo Machado
      */
     Record(const std::vector<Field>& data);
     /**
-     * \author Ivo Machado
-     * 
      * Construtor padrão
+     * 
+     * \author Ivo Machado
      */
     Record();
 };
