@@ -8,7 +8,7 @@
 /** 
  * Classe que concentra as operações centradas em artigos
  * 
- * \author Juliana Castro
+ * @author Juliana Castro
  */
 class Article {
 public:
@@ -29,28 +29,28 @@ public:
     /**
      * Recebe um arquivo em formato csv e lê um registro dele, modificando o cursor do arquivo
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     Article(FILE* file);
 
     /**
      * Construtor padrão, existe apenas para podermos criar coleções de artigos
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     Article();
 
     /**
      * Retorna um Record com os dados do artigo
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     Record toRecord();
 
     /**
      * Muda os dados do artigo para os dados presentes no Record recebido por parâmetro
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     void fromRecord(Record rec);
 
@@ -59,14 +59,14 @@ public:
      * pode ser usado como schema no DiskBlock e como parâmetro do search do 
      * HashFile
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     std::vector<Field> getFields();
 
     /**
      * Operação de impressão na saída padrão
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     friend std::ostream& operator<<(std::ostream& os, const Article& article)
     {

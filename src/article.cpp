@@ -3,6 +3,11 @@
 #include <cstring>
 #include <iostream>
 
+/**
+ * Remove aspas da string passada por parâmetro
+ * 
+ * @author Juliana Castro
+ */
 void removeQuotes(char* buffer)
 {
     std::string stringMiddleware(buffer);
@@ -12,6 +17,10 @@ void removeQuotes(char* buffer)
     strcpy(buffer, stringMiddleware.c_str());
 }
 
+
+/**
+ * Lê um campo string do arquivo de entrada e salva em destination
+ */
 void readString(FILE* file, char* buffer, char* destination, int maxSize, bool acceptNewLines = true)
 {
     buffer[0] = fgetc(file);

@@ -11,7 +11,7 @@
  * Classe responsável por cuidar de um arquivo de índice denso, seja primário 
  * ou secundário, é onde fica de fato a B-Tree.
  * 
- * \author Juliana Castro
+ * @author Juliana Castro
  */
 class IndexFile{
     public:
@@ -24,44 +24,44 @@ class IndexFile{
     /**
      * Abre um arquivo com o modo especificado
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     IndexFile(std::string filename, std::string mode);
     /**
      * Salva o cabeçalho no disco
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     ~IndexFile();
     /**
      * Cria um novo arquivo de índice
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     static IndexFile Create(std::string filename);
     /**
      * Abre um arquivo de índice já existente
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     static IndexFile Open(std::string filename);
     /**
      * Insere uma nova chave dada por field no índice com o dataBlockIndex como 
      * apontador de dados
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     void insert(Field field, int32_t dataBlockIndex);
     /**
      * Escreve o cabeçalho no disco
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     void writeHeaderToDisk();
     /**
      * Lê o cabeçalho do arquivo para a memória
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     void readHeaderFromDisk();
     /**
@@ -69,7 +69,7 @@ class IndexFile{
      * ou -1 se não encontrar. O segundo elemento do par é a quantidade de blocos
      * lidos do disco para achar o resultado
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     std::pair<int32_t, int32_t> search(Field field);
     /** Número máximo de chaves em um nó da árvore, é sempre par */
@@ -78,19 +78,19 @@ class IndexFile{
     /**
      * Encontra o apontador de índice que deve seguir para buscar/inserir um field
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     int findLocation(Field field, DiskBlock block);
     /**
      * Diz se um block é leaf
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     bool isLeaf(DiskBlock block);
     /**
      * Divide o bloco passado por parâmetro em dois novos blocos
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     Record split(DiskBlock& block);
 
@@ -98,7 +98,7 @@ class IndexFile{
      * Insere o field e seu apontador de dados em sua devida folha e sobe na árvore 
      * fazendo os splits necessários
      * 
-     * \author Juliana Castro
+     * @author Juliana Castro
      */
     Record insertNonFull(DiskBlock& block, int32_t blockOffset, Field field, int32_t dataBlockIndex);
 };
