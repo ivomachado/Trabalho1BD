@@ -11,9 +11,7 @@
  * @author Ivo Machado
  */
 class Record {
-    
 public:
-
     /** Vetor de Field do registro */
     std::vector<Field> m_data;
     /**
@@ -29,7 +27,7 @@ public:
      */
     short readFromBuffer(char* buffer, short begin);
     /**
-     * Cria um novo Recor com os dados do vector de fields recebido por parâmetro
+     * Cria um novo Record com os dados do vector de fields recebido por parâmetro
      * 
      * @author Ivo Machado
      */
