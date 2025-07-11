@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <functional>
+#include <string>
 
 Field::Field(DataTypes type)
     : m_type{ type }

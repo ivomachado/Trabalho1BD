@@ -1,5 +1,13 @@
 #include "hashfile.hpp"
+#include "block.hpp"
 #include "field.hpp"
+#include <vector>
+#include <utility>
+#include <string>
+#include <cstdio>
+#include <cstdint>
+#include "utils.hpp"
+#include "record.hpp"
 
 HashFile::HashFile(std::string filename, std::string mode)
 {

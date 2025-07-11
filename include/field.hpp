@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 /**
  * Tipos possíveis de Field

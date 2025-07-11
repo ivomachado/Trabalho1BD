@@ -3,8 +3,11 @@
 
 #include "field.hpp"
 #include "block.hpp"
+#include "record.hpp"
 #include <cstdint>
 #include <cstdio>
+#include <string>
+#include <utility>
 
 
 /**

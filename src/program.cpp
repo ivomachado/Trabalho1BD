@@ -1,14 +1,17 @@
 #include "program.hpp"
 #include "article.hpp"
+#include "block.hpp"
 #include "field.hpp"
 #include "hashfile.hpp"
 #include "indexfile.hpp"
 #include "record.hpp"
+#include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <sstream>
+#include <string>
+#include <utility>
 #include <vector>
 
 using namespace std;

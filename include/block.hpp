@@ -1,13 +1,15 @@
 #ifndef BLOCK_HPP
 #define BLOCK_HPP
 
+#include "field.hpp"
 #include "record.hpp"
 #include <cstdint>
 #include <cstdio>
 #include <vector>
 
 /**
- * Classe responsável por realizar abstração de um bloco, todos os acessos de leitura e escrita ao disco são feitos por ela
+ * Classe responsável por realizar abstração de um bloco, todos os acessos de
+ * leitura e escrita ao disco são feitos por ela
  * 
  * @author Ivo Machado
  */
@@ -15,8 +17,10 @@ class DiskBlock {
 public:
     DiskBlock(std::vector<Field>& recordFields);
     /**
-     * Lê um bloco do disco de um arquivo previamente posicionado no endereço certo para um vetor de char.
-     * Depois com base na quantidade de registros no bloco, faz o parse para registros em memória.
+     * Lê um bloco do disco de um arquivo previamente posicionado no endereço
+     * certo para um vetor de char.
+     * Depois com base na quantidade de registros no bloco, faz o parse para
+     * registros em memória.
      * 
      * @author Ivo Machado
      */
@@ -33,14 +37,16 @@ public:
      * @author Ivo Machado
      */
     static const int SIZE = 4096;
-    /** Tamanho disponível considerando o espaço ocupado pelo cabeçalho do bloco */
+    /** Tamanho disponível considerando o espaço ocupado pelo cabeçalho do
+     * bloco */
     static const int AVAILABLE_SIZE = 4088; //Menos 2 inteiros
     /** Vetor de registros do bloco */
     std::vector<Record> m_records;
     /** Tamanho de um registro */
     short m_recordSize{ 0 };
     /**
-     * Buffer de char que para onde é lido o bloco do disco e que é escrito no disco
+     * Buffer de char que para onde é lido o bloco do disco e que é escrito
+     * no disco
      * 
      * @author Ivo Machado
      */

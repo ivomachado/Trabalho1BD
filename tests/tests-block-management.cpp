@@ -4,6 +4,7 @@
 #include "record.hpp"
 #include <cstdio>
 #include <cstring>
+#include <string>
 #include <vector>
 
 using namespace std;

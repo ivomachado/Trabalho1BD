@@ -3,10 +3,12 @@
 #include "block.hpp"
 #include "cstdint"
 #include "cstdio"
-#include "functional"
+#include "field.hpp"
 #include "record.hpp"
 #include "utils.hpp"
 #include "vector"
+#include <utility>
+#include <string>
 
 /**
  * Classe responsável por cuidar do arquivo de dados utilizando hashing
@@ -16,9 +18,9 @@
 class HashFile {
 public:
     /**
-     * Insere o Record passado por parâmetro em sua posição devida no hashing ou 
-     * em blocos de overflow e retorna qual o índice do bloco em que foi feita a
-     * inserção
+     * Insere o Record passado por parâmetro em sua posição devida no hashing
+     * ou em blocos de overflow e retorna qual o índice do bloco em que foi
+     * feita a inserção
      * 
      * @author Ivo Machado
      */

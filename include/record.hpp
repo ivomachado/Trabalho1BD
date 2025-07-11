@@ -5,7 +5,8 @@
 #include <vector>
 
 /**
- * Classe de abstração de um registro e seus campos, escreve e lê suas informações 
+ * Classe de abstração de um registro e seus campos, escreve e lê suas
+ * informações 
  * em buffer de bytes
  * 
  * @author Ivo Machado
@@ -27,7 +28,8 @@ public:
      */
     short readFromBuffer(char* buffer, short begin);
     /**
-     * Cria um novo Record com os dados do vector de fields recebido por parâmetro
+     * Cria um novo Record com os dados do vector de fields recebido por
+     * parâmetro
      * 
      * @author Ivo Machado
      */
