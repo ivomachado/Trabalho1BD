@@ -7,7 +7,7 @@
 #include <string>
 
 /**
- * Tipos possíveis de Field
+ * Possible Field types.
  * 
  * @author Ivo Machado
  */
@@ -17,118 +17,117 @@ enum class DataTypes { Invalid,
     ByteArray };
 
 /**
- * Classe de abstração de campos atômicos com seus tipos de dados possíveis, 
- * escreve e lê suas informações em buffer de bytes
+ * An abstraction class for atomic fields with their possible data types. 
+ * It writes and reads its information to/from a byte buffer.
  * 
  * @author Ivo Machado
  */
 class Field {
 public:
-    /** Tamanho máximo da string ou do bytearray */
+    /** Maximum size of the string or byte array. */
     short m_maxSize;
-    /** Tipo do Field, padrão é inválido */
+    /** The type of the Field, defaults to Invalid. */
     DataTypes m_type{ DataTypes::Invalid };
-    /** Constrói com o type passado */
+    /** Constructs with the given type. */
     Field(DataTypes type);
-    /** Construtor padrão */
+    /** Default constructor. */
     Field() {}
-    /** Guarda o inteiro */
+    /** Stores the integer value. */
     int32_t m_integer;
-    /** Guarda a string e o bytarray */
+    /** Stores the string and byte array value. */
     std::string m_string{""};
     /** 
-     * Cria um Field do tipo inteiro sem valor definido
+     * Creates an Integer type Field without a defined value.
      * 
      * @author Ivo Machado
      */
     static Field asInteger();
     /** 
-     * Cria um Field do tipo inteiro com valor definido pelo parâmetro
+     * Creates an Integer type Field with a value defined by the parameter.
      * 
      * @author Ivo Machado
      */
     static Field asInteger(int32_t value);
     /** 
-     * Cria um Field do tipo string sem valor definido e com tamanho máximo
+     * Creates a String type Field without a defined value and with a maximum size.
      * 
      * @author Ivo Machado
      */
     static Field asString(short maxSize);
     /** 
-     * Cria um Field do tipo byteArray sem valor definido e com tamanho máximo
+     * Creates a ByteArray type Field without a defined value and with a maximum size.
      * 
      * @author Ivo Machado
      */
     static Field asByteArray(short maxSize);
     /** 
-     * Cria um Field do tipo string com valor definido pelo parâmetro e com tamanho máximo
+     * Creates a String type Field with a value and maximum size defined by the parameters.
      * 
      * @author Ivo Machado
      */
     static Field asString(const char* data, short maxSize);
     /** 
-     * Retorna a posição a que a instância de Field pertence numa tabela hash de 
-     * tamanho size.
+     * Returns the position to which the Field instance belongs in a hash table of size 'size'.
      * 
      * @author Ivo Machado
      */
     int32_t hash(int32_t size);
     /** 
-     * Retorna o tamanho que o campo ocupa no disco em bytes.
+     * Returns the size in bytes that the field occupies on disk.
      * 
      * @author Ivo Machado
      */
     short size();
     /**
-     * Escreve o valor do field no buffer a partir da posição begin
+     * Writes the field's value to the buffer starting from the 'begin' position.
      * 
      * @author Ivo Machado
      */
     short writeToBuffer(char* buffer, short begin);
     /**
-     * Lê o dado do field do buffer a partir da posição begin
+     * Reads the field's data from the buffer starting from the 'begin' position.
      * 
      * @author Ivo Machado
      */
     short readFromBuffer(char* buffer, short begin);
     /**
-     * Operador de igual
+     * Equality operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator==(const Field& a, const Field& b);
     /**
-     * Operador de diferente
+     * Inequality operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator!=(const Field& a, const Field& b);
     /**
-     * Operador de maior
+     * Greater than operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator>(const Field& a, const Field& b);
     /**
-     * Operador de menor
+     * Less than operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator<(const Field& a, const Field& b);
     /**
-     * Operador de menor ou igual
+     * Less than or equal to operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator<=(const Field& a, const Field& b);
     /**
-     * Operador de maior ou igual
+     * Greater than or equal to operator.
      * 
      * @author Ivo Machado
      */
     friend bool operator>=(const Field& a, const Field& b);
     /**
-     * Operador de impressão de um field
+     * Output stream operator for a Field.
      * 
      * @author Ivo Machado
      */

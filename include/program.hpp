@@ -5,38 +5,39 @@
 #include <string>
 
 /**
- * Classe que concentra os programas pedidos no trabalho
+ * Class that centralizes the functions for the assignment's requirements.
  * 
  * @author Juliana Castro
  */
 class Program {
 public:
     /**
-     * Abre o arquivo passado e gera um arquivo de dados, e dois de índice para este de dados
+     * Opens the given file and generates a data file, and two index files 
+     * (primary and secondary) from its contents.
      * 
      * @author Juliana Castro
      */
     static void upload(std::string filename = "teste.csv");
     /**
-     * Procura o id no arquivo de dados usando hashing
+     * Searches for the ID in the data file using hashing.
      * 
      * @author Juliana Castro
      */
     static void findrec(int32_t id);
     /**
-     * Procura o id no arquivo de índice primário
+     * Searches for the ID in the primary index file.
      * 
      * @author Juliana Castro
      */
     static void seek1(int32_t id);
     /**
-     * Procura o título no arquivo de índice secundário
+     * Searches for the title in the secondary index file.
      * 
      * @author Juliana Castro
      */
     static void seek2(std::string title);
     /**
-     * Imprime mensagem de ajuda
+     * Prints a help message.
      * 
      * @author Juliana Castro
      */

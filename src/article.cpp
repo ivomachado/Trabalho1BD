@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
- * Remove aspas da string passada por parâmetro
+ * Removes quotes from the string passed as a parameter.
  * 
  * @author Juliana Castro
  */
@@ -19,7 +19,7 @@ void removeQuotes(char* buffer)
 
 
 /**
- * Lê um campo string do arquivo de entrada e salva em destination
+ * Reads a string field from the input file and saves it to the destination.
  * 
  * @author Juliana Castro
  */

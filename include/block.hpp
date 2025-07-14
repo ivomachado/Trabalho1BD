@@ -8,8 +8,8 @@
 #include <vector>
 
 /**
- * Classe responsável por realizar abstração de um bloco, todos os acessos de
- * leitura e escrita ao disco são feitos por ela
+ * Class responsible for abstracting a block; all disk read and write access 
+ * is done through it.
  * 
  * @author Ivo Machado
  */
@@ -17,78 +17,79 @@ class DiskBlock {
 public:
     DiskBlock(std::vector<Field>& recordFields);
     /**
-     * Lê um bloco do disco de um arquivo previamente posicionado no endereço
-     * certo para um vetor de char.
-     * Depois com base na quantidade de registros no bloco, faz o parse para
-     * registros em memória.
+     * Reads a block from the disk of a file previously positioned at the correct
+     * address into a char buffer. Then, based on the number of records in the
+     * block, it parses them into in-memory records.
      * 
      * @author Ivo Machado
      */
     void readFromFile(FILE* file);
     /**
-     * Faz o parse dos registros em memória para o buffer
+     * Parses the in-memory records into the buffer and writes to the file.
      * 
      * @author Ivo Machado
      */
     void writeToFile(FILE* file);
     /**
-     * Tamanho do bloco
+     * Size of the block in bytes.
      * 
      * @author Ivo Machado
      */
     static const int SIZE = 4096;
-    /** Tamanho disponível considerando o espaço ocupado pelo cabeçalho do
-     * bloco */
-    static const int AVAILABLE_SIZE = 4088; //Menos 2 inteiros
-    /** Vetor de registros do bloco */
+    /** 
+     * Available size considering the space occupied by the block header.
+     * (Size - 2 integers)
+     */
+    static const int AVAILABLE_SIZE = 4088;
+    /** Vector of records in the block. */
     std::vector<Record> m_records;
-    /** Tamanho de um registro */
+    /** Size of a single record in bytes. */
     short m_recordSize{ 0 };
     /**
-     * Buffer de char que para onde é lido o bloco do disco e que é escrito
-     * no disco
+     * Char buffer where the disk block is read into and from which it's written
+     * to disk.
      * 
      * @author Ivo Machado
      */
     char m_buffer[DiskBlock::SIZE];
     /**
-     * Vetor dos registros em memória
+     * The schema for the records in this block.
      * 
      * @author Ivo Machado
      */
     std::vector<Field> m_recordFields;
     /**
-     * Cabeçalho do bloco
+     * The block header.
      * 
      * @author Ivo Machado
      */
     Record m_header;
     /**
-     * Posição do buffer para fazer a próxima escrita/leitura
+     * Current position in the buffer for the next write/read operation.
      * 
      * @author Ivo Machado
      */
     short m_bufferPos{ 0 };
     /**
-     * Escreve o cabeçalho do bloco e todos seus registros no buffer
+     * Writes the block header and all its records to the buffer.
      * 
      * @author Ivo Machado
      */
     void writeToBuffer();
     /**
-     * Lê o cabeçalho do bloco e todos seus registros do buffer
+     * Reads the block header and all its records from the buffer.
      * 
      * @author Ivo Machado
      */
     void readFromBuffer();
     /**
-     * Tenta inserir um novo registro no bloco caso o registro caiba no bloco
+     * Tries to insert a new record into the block if it fits.
      * 
      * @author Ivo Machado
      */
     bool insert(const Record& record);
     /**
-     * Informa se ainda cabe mais um registro no bloco
+     * Indicates if one more record can fit in the block.
      * 
      * @author Ivo Machado
      */

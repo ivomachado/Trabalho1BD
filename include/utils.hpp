@@ -8,14 +8,14 @@
 #include <vector>
 
 /**
- * Contém coisas não diretamente ligadas ao problema mas que são úteis
+ * Contains utilities that are not directly related to the main problem but are helpful.
  * 
  * @author Ivo Machado
  */
 namespace Utils {
 
 /**
- * Escreve o vector m_data no buffer
+ * Writes the vector `m_data` to the buffer.
  * 
  * @author Ivo Machado
  */
@@ -29,7 +29,7 @@ short writeVectorToBuffer(char* buffer, std::vector<T>& m_data, short begin)
 }
 
 /**
- * Lê o vector m_data do buffer
+ * Reads the vector `m_data` from the buffer.
  * 
  * @author Ivo Machado
  */
@@ -43,7 +43,7 @@ short readVectorFromBuffer(char* buffer, std::vector<T>& m_data, short begin)
 }
 
 /**
- * Converte o value para 4 char e os escreve em buffer
+ * Converts the integer `value` to a 4-char array and writes it to the buffer.
  * 
  * @author Ivo Machado
  */
@@ -56,7 +56,7 @@ inline void intToCharArray(int32_t value, char* buffer)
 }
 
 /**
- * converte 4 char para inteiro
+ * Converts a 4-char array to an integer.
  * 
  * @author Ivo Machado
  */
@@ -67,17 +67,17 @@ inline int32_t charArrayToInt(char* buffer)
 }
 
 /**
- * Abstrai um mapa de bits para facilitar as operações de ligar e desligar bits
+ * Abstracts a bitmap to facilitate setting and clearing bits.
  * 
  * @author Ivo Machado
  */
 class BitMap {
 public:
-    /** Guarda os bytes na memória */
+    /** Stores the bytes in memory */
     std::string m_data{ "" };
 
     /**
-     * Construtor padrão com capacidade 0
+     * Default constructor with 0 capacity.
      * 
      * @author Ivo Machado
      */
@@ -87,7 +87,8 @@ public:
     }
 
     /**
-     * Cria um bitmap com os dados dos ByteArray dos blocos passados por parâmetro
+     * Creates a bitmap with data from the ByteArray fields of the blocks
+     * passed as parameters.
      * 
      * @author Ivo Machado
      */
@@ -107,7 +108,8 @@ public:
     }
 
     /**
-     * Cria um bitmap com capacidade no primeiro múltiplo de 8 maior ou igual ao tamanho pedido
+     * Creates a bitmap with a capacity that is the first multiple of 8
+     * greater than or equal to the requested size.
      * 
      * @author Ivo Machado
      */
@@ -123,7 +125,7 @@ public:
     }
 
     /**
-     * Retorna o booleano da posição informada
+     * Returns the boolean value at the specified position.
      * 
      * @author Ivo Machado
      */
@@ -136,7 +138,7 @@ public:
     }
 
     /**
-     * Atribui o valor passado à posição pedida
+     * Assigns the given value to the requested position.
      * 
      * @author Ivo Machado
      */
@@ -149,7 +151,7 @@ public:
     }
 
     /**
-     * Escreve o bitmap divido nos atributos ByteArray de vários blocos
+     * Writes the bitmap, divided among the ByteArray attributes of several blocks.
      * 
      * @author Ivo Machado
      */
@@ -172,7 +174,7 @@ public:
 };
 
 /**
- * Calcula o offset em bytes do bloco pedido considerando o overhead de cabeçalho do arquivo
+ * Calculates the byte offset of the requested block, considering the file header overhead.
  * 
  * @author Ivo Machado
  */

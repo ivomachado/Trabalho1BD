@@ -5,37 +5,36 @@
 #include <vector>
 
 /**
- * Classe de abstração de um registro e seus campos, escreve e lê suas
- * informações 
- * em buffer de bytes
+ * Abstraction class for a record and its fields. It writes and reads its
+ * information to/from a byte buffer.
  * 
  * @author Ivo Machado
  */
 class Record {
 public:
-    /** Vetor de Field do registro */
+    /** Vector of Fields for the record */
     std::vector<Field> m_data;
     /**
-     * Escreve os dados do Record no buffer
+     * Writes the Record's data to the buffer.
      * 
      * @author Ivo Machado
      */
     short writeToBuffer(char* buffer, short begin);
     /**
-     * Lê os dados do buffer para o Record
+     * Reads data from the buffer into the Record.
      * 
      * @author Ivo Machado
      */
     short readFromBuffer(char* buffer, short begin);
     /**
-     * Cria um novo Record com os dados do vector de fields recebido por
-     * parâmetro
+     * Creates a new Record with the data from the vector of fields received
+     * as a parameter.
      * 
      * @author Ivo Machado
      */
     Record(const std::vector<Field>& data);
     /**
-     * Construtor padrão
+     * Default constructor.
      * 
      * @author Ivo Machado
      */

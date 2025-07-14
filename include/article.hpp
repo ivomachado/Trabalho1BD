@@ -6,65 +6,65 @@
 #include <iostream>
 
 /** 
- * Classe que concentra as operações centradas em artigos
+ * Class that centralizes operations focused on articles
  * 
  * @author Juliana Castro
  */
 class Article {
 public:
-    /** Id do artigo */
+    /** Article ID */
     int m_id;
-    /** Title do artigo */
+    /** Article Title */
     char m_title[301];
-    /** Year do artigo */
+    /** Article Year */
     int m_year;
-    /** Authors do artigo */
+    /** Article Authors */
     char m_authors[1025];
-    /** Quotes do artigo */
+    /** Article Quotes */
     int m_quotes;
-    /** Update Time do artigo */
+    /** Article Update Time */
     char m_updateTime[101];
-    /** Snippet do artigo */
+    /** Article Snippet */
     char m_snippet[1025];
     /**
-     * Recebe um arquivo em formato csv e lê um registro dele, modificando o cursor do arquivo
+     * Receives a csv file and reads a record from it, modifying the file cursor
      * 
      * @author Juliana Castro
      */
     Article(FILE* file);
 
     /**
-     * Construtor padrão, existe apenas para podermos criar coleções de artigos
+     * Default constructor, exists only to allow creating collections of articles
      * 
      * @author Juliana Castro
      */
     Article();
 
     /**
-     * Retorna um Record com os dados do artigo
+     * Returns a Record with the article's data
      * 
      * @author Juliana Castro
      */
     Record toRecord();
 
     /**
-     * Muda os dados do artigo para os dados presentes no Record recebido por parâmetro
+     * Changes the article's data to the data present in the Record received as a parameter
      * 
      * @author Juliana Castro
      */
     void fromRecord(Record rec);
 
     /**
-     * Retorna um vector de Fields que contém os dados do artigo, este vetor 
-     * pode ser usado como schema no DiskBlock e como parâmetro do search do 
-     * HashFile
+     * Returns a vector of Fields containing the article's data. This vector 
+     * can be used as a schema in DiskBlock and as a parameter for HashFile's 
+     * search
      * 
      * @author Juliana Castro
      */
     std::vector<Field> getFields();
 
     /**
-     * Operação de impressão na saída padrão
+     * Standard output print operation
      * 
      * @author Juliana Castro
      */
